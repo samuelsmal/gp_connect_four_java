@@ -1,0 +1,13 @@
+### Linux ###
+*~
+
+### Java ###
+*.class
+
+out/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
