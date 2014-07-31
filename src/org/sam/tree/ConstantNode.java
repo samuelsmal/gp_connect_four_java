@@ -19,6 +19,10 @@ public class ConstantNode implements INode {
         this.constant = constant;
     }
 
+    public String toString() {
+        return Long.toString(constant);
+    }
+
     public long getConstant() {
         return constant;
     }

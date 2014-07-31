@@ -13,6 +13,10 @@ public class SaveDivisionOperationNode extends BinaryOperationNode {
         super(left, right);
     }
 
+    public String toString() {
+        return "((" + left.toString() + ")%(" + right.toString() + "))";
+    }
+
     @Override
     public long evaluate(char playerColour, char enemyColour, Game game) {
         long right_evaluation = right.evaluate(playerColour, enemyColour, game);

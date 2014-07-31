@@ -14,6 +14,12 @@ public class EnemyStoneAtNode extends ComputationalNode {
         super(x, y);
     }
 
+    public String toString() {
+        return "enemyColour == game.getColourOfStone(\n" +
+                "                (int)x.evaluate(playerColour, enemyColour, game),\n" +
+                "                (int)y.evaluate(playerColour, enemyColour, game)) ? 1 : 0";
+    }
+
     @Override
     public long evaluate(char playerColour, char enemyColour, Game game) {
         return enemyColour == game.getColourOfStone(

@@ -19,6 +19,10 @@ public class ConditionalNode implements INode {
         this.elseNode = elseNode;
     }
 
+    public String toString() {
+        return " (if(" + ifNode.toString() + " >= 0){" + thenNode.toString() + "} else {" + thenNode.toString() + "})";
+    }
+
     public INode getIfNode() {
         return ifNode;
     }
