@@ -10,7 +10,7 @@ import java.util.Random;
  * Created by samuel on 27/07/14.
  */
 public class Tree {
-    private Random rand = new Random(System.currentTimeMillis());
+    private static Random rand = new Random(System.currentTimeMillis());
 
     private INode root;
 
@@ -30,121 +30,35 @@ public class Tree {
         this.root = root;
     }
 
-    private ArrayList<Class> getFunctionSet() {
-        ArrayList<Class> functions = null;
-        try {
-             functions = new ArrayList<Class>() {{
-                add(Class.forName("AddOperationNode"));
-                add(Class.forName("SubtractionOperationNode"));
-                add(Class.forName("MultiplicationOperationNode"));
-                add(Class.forName("SaveDivisionOperationNode"));
-                add(Class.forName("ConditionalNode"));
-                add(Class.forName("PlayerStoneAtNode"));
-                add(Class.forName("EnemyStoneAtNode"));
-            }};
-        } catch (ClassNotFoundException e) {
-            System.out.println("Tree::getFunctionSet, Exception thrown  :" + e);
-        }
+    private INode initFully(long depth) {
+        if (depth > 0) {
+            int functionRandomNumber = rand.nextInt(4); // 4 functions
 
-        return functions;
-    }
-
-    private ArrayList<Class> getTerminalSet() {
-        ArrayList<Class> terminals = null;
-
-        try {
-            terminals =  new ArrayList<Class>() {{
-                add(Class.forName("ConstantNode"));
-            }};
-        } catch (ClassNotFoundException e) {
-            System.out.println("Tree::getTerminalSet, Exception thrown  :" + e);
-        }
-
-        return terminals;
-    }
-
-    private INode getRandomNode(long depth) {
-        List<Class> functions = getFunctionSet();
-        List<Class> terminals = getTerminalSet();
-
-        INode node = null;
-
-        if (depth >= 1) {
-            try {
-                node = (INode)functions.get(rand.nextInt(functions.size() + 1)).newInstance();
-            } catch (InstantiationException e) {
-                System.out.println("Exception thrown  :" + e);
-            } catch (IllegalAccessException e) {
-                System.out.println("Exception thrown  :" + e);
-            }
-
-            try {
-                if (node.getClass().equals(Class.forName("ConditionalNode"))) {
-                    // TODO
-
-                } else if (node.getClass().equals(Class.forName("PlayerStoneAtNode"))
-                        || node.getClass().equals(Class.forName("EnemyStoneAtNode"))) {
-                    // TODO
-                }
-            } catch(ClassNotFoundException e) {
-                System.out.println("Exception thrown  :" + e);
+            if (functionRandomNumber <= 0) {
+                return new AddOperationNode(initFully(depth - 1), initFully(depth -1 ));
+            } else if (functionRandomNumber <= 1) {
+                return new SubtractionOperationNode(initFully(depth - 1), initFully(depth -1 ));
+            } else if (functionRandomNumber <= 2) {
+                return new MultiplicationOperationNode(initFully(depth - 1), initFully(depth -1 ));
+            } else if (functionRandomNumber <= 3) {
+                return new SaveDivisionOperationNode(initFully(depth - 1), initFully(depth -1 ));
+            } else {
+                return new ConditionalNode(initFully(depth - 1), initFully(depth -1 ), initFully(depth - 1));
             }
         } else {
-            try {
-                node = (INode) terminals.get(rand.nextInt(terminals.size() + 1)).newInstance();
-            } catch (InstantiationException e) {
-                System.out.println("Exception thrown  :" + e);
-            } catch (IllegalAccessException e) {
-                System.out.println("Exception thrown  :" + e);
-            }
+            int terminalRandomNumber = rand.nextInt(3);
 
-            try {
-                if (node.getClass().equals(Class.forName("ConstantNode"))) {
-                    // TODO
-                }
-            } catch(ClassNotFoundException e) {
-                System.out.println("Exception thrown  :" + e);
-            }
+            if (terminalRandomNumber <= 0) {
+                return new ConstantNode((long)rand.nextInt(7));
+            } else if (terminalRandomNumber <= 1) {
+                return new EnemyStoneAtNode(new ConstantNode((long)rand.nextInt(7)), new ConstantNode((long)rand.nextInt(7)));
+            } else {
+                return new PlayerStoneAtNode(new ConstantNode((long)rand.nextInt(7)), new ConstantNode((long)rand.nextInt(7)));
             }
         }
-
-        return node;
     }
 
-    // TODO: finish and test
-    public void initWithFull(long depth) {
-        List<Class> functions = getFunctionSet();
-        List<Class> terminals = getTerminalSet();
-
-        INode currentNode = root;
-
-        try {
-            currentNode = (INode)functions.get(rand.nextInt(functions.size() + 1)).newInstance();
-        } catch (InstantiationException e) {
-            System.out.println("Exception thrown  :" + e);
-        } catch (IllegalAccessException e) {
-            System.out.println("Exception thrown  :" + e);
-        }
-
-        try {
-            if (root.getClass().equals(Class.forName("ConditionalNode"))) {
-
-            } else if (root.getClass().equals(Class.forName("PlayerStoneAtNode"))
-                    || root.getClass().equals(Class.forName("EnemyStoneAtNode"))) {
-
-            }
-        } catch(ClassNotFoundException e) {
-            System.out.println("Exception thrown  :" + e);
-        }
-
-    }
-
-    // TODO: finish
     public void initWithGrow(long maxDepth) {
-        List<Class> functions = getFunctionSet();
-        List<Class> terminals = getTerminalSet();
-
-        // Poor choice of random seed.
-        Random random = new Random(System.currentTimeMillis());
+        // TODO: finish
     }
 }

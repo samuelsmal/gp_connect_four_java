@@ -3,6 +3,7 @@ package org.sam.tree;
 import org.sam.game.Game;
 
 /**
+ * Function Node
  * Created by samuel on 27/07/14.
  */
 public class MultiplicationOperationNode extends BinaryOperationNode {

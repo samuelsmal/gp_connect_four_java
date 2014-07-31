@@ -3,6 +3,7 @@ package org.sam.tree;
 import org.sam.game.Game;
 
 /**
+ * Terminal Node
  * Created by samuel on 27/07/14.
  */
 public class PlayerStoneAtNode extends ComputationalNode {
