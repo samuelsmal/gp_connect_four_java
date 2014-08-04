@@ -6,8 +6,11 @@ import java.util.Arrays;
  * Created by samuel on 27/07/14.
  */
 public class Game {
-    private static int BOARD_WIDTH = 7;
-    private static int BOARD_HEIGHT = 6;
+    public static final int BOARD_WIDTH = 7;
+    public static final int BOARD_HEIGHT = 6;
+    public static final char FIRST_PLAYER_COLOUR = 'x';
+    public static final char SECOND_PLAYER_COLOUR = 'o';
+    public static final char EMPTY_STONE_COLOUR = '_';
 
     private char[][] board;
 
@@ -42,7 +45,7 @@ public class Game {
 
     public void insertStoneInColumn(int col, char colour) throws ColumnFullException {
         for (int i = BOARD_HEIGHT - 1; i >= 0; i--) {
-            if (board[i][col] == '_') {
+            if (board[i][col] == EMPTY_STONE_COLOUR) {
                 board[i][col] = colour;
                 return ;
             }
@@ -70,6 +73,73 @@ public class Game {
     @Override
     public int hashCode() {
         return 0;
+    }
+
+    public boolean hasWinner() {
+        return colourOfWinner() != EMPTY_STONE_COLOUR;
+    }
+
+    public char colourOfWinner() {
+        char currentStoneColour;
+
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_HEIGHT; j++) {
+                currentStoneColour = checkEast(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    return currentStoneColour;
+                }
+
+                currentStoneColour = checkEastSouth(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    return currentStoneColour;
+                }
+
+                currentStoneColour = checkSouth(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    return currentStoneColour;
+                }
+
+                currentStoneColour = checkWest(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    return currentStoneColour;
+                }
+
+                currentStoneColour = checkWestSouth(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    return currentStoneColour;
+                }
+            }
+        }
+
+        return EMPTY_STONE_COLOUR;
+    }
+
+    private char checkEast(int x, int y) { return checkVector(x, y, 1, 0); }
+    private char checkEastSouth(int x, int y) { return checkVector(x, y, 1, 1); }
+    private char checkSouth(int x, int y) { return checkVector(x, y, 0, 1); }
+    private char checkWestSouth(int x, int y) { return  checkVector(x, y, -1, 1); }
+    private char checkWest(int x, int y) { return checkVector(x, y, -1, 0); }
+
+    private char checkVector(int x, int y, int dx, int dy) {
+        if (getColourOfStone(x, y) == EMPTY_STONE_COLOUR) {
+            return EMPTY_STONE_COLOUR;
+        }
+
+        int correctStones = 1;
+
+        char stoneColourToCheckAgainst = getColourOfStone(x, y);
+
+        for (int i = 1; (i < 4)
+                && (x + i*dx < BOARD_WIDTH)
+                && (y + i*dy < BOARD_HEIGHT)
+                && (y + i*dy >= 0)
+                && (x + i*dx >= 0); i++) {
+            if (stoneColourToCheckAgainst == getColourOfStone(x + i * dx, y + i * dy)) {
+                ++correctStones;
+            }
+        }
+
+        return (correctStones < 4 ? EMPTY_STONE_COLOUR : stoneColourToCheckAgainst);
     }
 
     @Override
