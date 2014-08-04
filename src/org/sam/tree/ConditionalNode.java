@@ -51,4 +51,9 @@ public class ConditionalNode implements INode {
     public long evaluate(char playerColour, char enemyColour, Game game) {
         return ifNode.evaluate(playerColour, enemyColour, game) >= 0 ? thenNode.evaluate(playerColour, enemyColour, game) : elseNode.evaluate(playerColour, enemyColour, game);
     }
+
+    @Override
+    public INode getDeepCopy() {
+        return new ConditionalNode(ifNode.getDeepCopy(), thenNode.getDeepCopy(), elseNode.getDeepCopy());
+    }
 }

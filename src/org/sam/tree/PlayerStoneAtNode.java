@@ -26,4 +26,9 @@ public class PlayerStoneAtNode extends ComputationalNode {
                 (int)x.evaluate(playerColour, enemyColour, game),
                 (int)y.evaluate(playerColour, enemyColour, game)) ? 1 : 0;
     }
+
+    @Override
+    public INode getDeepCopy() {
+        return new PlayerStoneAtNode((ConstantNode) x.getDeepCopy(),(ConstantNode) y.getDeepCopy());
+    }
 }

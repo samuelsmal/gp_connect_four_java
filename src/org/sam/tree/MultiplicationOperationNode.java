@@ -22,4 +22,9 @@ public class MultiplicationOperationNode extends BinaryOperationNode {
     public long evaluate(char playerColour, char enemyColour, Game game) {
         return left.evaluate(playerColour, enemyColour, game) * right.evaluate(playerColour, enemyColour, game);
     }
+
+    @Override
+    public INode getDeepCopy() {
+        return new MultiplicationOperationNode(left.getDeepCopy(), right.getDeepCopy());
+    }
 }

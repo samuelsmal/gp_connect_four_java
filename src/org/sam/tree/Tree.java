@@ -20,6 +20,8 @@ public class Tree {
         this.root = root;
     }
 
+    public Tree(Tree source) { this.root = source.root.getDeepCopy(); }
+
     public String toString() {
         return root.toString();
     }

@@ -27,4 +27,9 @@ public class SaveDivisionOperationNode extends BinaryOperationNode {
             return 1;
         }
     }
+
+    @Override
+    public INode getDeepCopy() {
+        return new SaveDivisionOperationNode(left.getDeepCopy(), right.getDeepCopy());
+    }
 }

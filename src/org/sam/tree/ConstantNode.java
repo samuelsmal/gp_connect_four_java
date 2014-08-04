@@ -35,4 +35,9 @@ public class ConstantNode implements INode {
     public long evaluate(char playerColour, char enemyColour, Game game) {
         return constant;
     }
+
+    @Override
+    public INode getDeepCopy() {
+        return new ConstantNode(constant);
+    }
 }
