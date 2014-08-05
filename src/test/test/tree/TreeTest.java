@@ -54,10 +54,14 @@ public class TreeTest {
 
     @Test
     public void testEquals() throws Exception {
-        Tree aTree = new FullTree();
+        Tree aTree = TreeFactory.fullTree();
         Tree copy = new Tree(aTree);
 
         assertFalse(aTree == copy);
+
+        assertFalse(aTree.getRoot() == copy.getRoot());
+        assertEquals(aTree.getRoot(), copy.getRoot());
+
         assertEquals(copy, aTree);
         assertEquals(aTree, copy);
     }
