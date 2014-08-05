@@ -1,11 +1,15 @@
 package org.sam.tree;
 
+import org.sam.game.Game;
+
 /**
  * Created by samuel on 27/07/14.
  */
-abstract class BinaryOperationNode implements INode {
+abstract class BinaryOperationNode extends AbstractNode {
     protected INode left;
     protected INode right;
+
+    protected String operationSign;
 
     protected BinaryOperationNode() {}
 
@@ -13,6 +17,8 @@ abstract class BinaryOperationNode implements INode {
         this.left = left;
         this.right = right;
     }
+
+    protected abstract long doOperation(long leftValue, long rightValue);
 
     public INode getLeft() {
         return left;
@@ -31,8 +37,28 @@ abstract class BinaryOperationNode implements INode {
     }
 
     @Override
-    public void visit(INodeVisitor visitor) {
-        visitor.visit(this);
+    public long evaluate(char playerColour, char enemyColour, Game game) {
+        return doOperation(left.evaluate(playerColour, enemyColour, game), right.evaluate(playerColour, enemyColour, game));
+    }
+
+    @Override
+    public INode getDeepCopy() {
+        BinaryOperationNode copy = null;
+
+        try {
+            copy = getClass().newInstance();
+            copy.left = left.getDeepCopy();
+            copy.right = right.getDeepCopy();
+        } catch (InstantiationException | IllegalAccessException pEx) {
+            throw new RuntimeException(String.format("Could not instantiate %s. Is the default constructor implemented? (ex=%s)", getClass().getSimpleName(), pEx.getMessage()), pEx);
+        }
+
+        return copy;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + left.toString() + operationSign + right.toString() + ")";
     }
 
     @Override

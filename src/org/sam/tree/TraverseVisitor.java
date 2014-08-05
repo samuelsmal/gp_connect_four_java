@@ -39,6 +39,11 @@ public class TraverseVisitor implements INodeVisitor {
     }
 
     @Override
+    public void visit(AbstractNode node) {
+
+    }
+
+    @Override
     public void visit(BinaryOperationNode node) {
         nodes.add(node);
 
