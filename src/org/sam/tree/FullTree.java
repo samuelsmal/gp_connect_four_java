@@ -12,8 +12,15 @@ public class FullTree extends Tree {
         root = initFully(depth);
     }
 
+    /**
+     * Recursive method to init a tree.
+     * The idea behind the if-else-clauses is to provide a custom distribution of functions.
+     * @param depth of the tree.
+     * @return
+     */
     private INode initFully(long depth) {
         if (depth > 0) {
+            // Functions
             int functionRandomNumber = rand.nextInt(4); // 4 functions
 
             if (functionRandomNumber <= 0) {
@@ -28,6 +35,7 @@ public class FullTree extends Tree {
                 return new ConditionalNode(initFully(depth - 1), initFully(depth -1 ), initFully(depth - 1));
             }
         } else {
+            // Terminals
             int terminalRandomNumber = rand.nextInt(3);
 
             if (terminalRandomNumber <= 0) {
