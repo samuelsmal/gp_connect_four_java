@@ -3,10 +3,10 @@ package test.tree;
 import org.junit.Test;
 import org.sam.tree.AddOperationNode;
 import org.sam.tree.ConstantNode;
-import org.sam.tree.SaveDivisionOperationNode;
 import org.sam.tree.Tree;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by samuel on 05/08/14.

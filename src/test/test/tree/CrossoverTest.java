@@ -1,14 +1,15 @@
 package test.tree;
 
 import org.junit.Test;
-import org.sam.tree.FullTree;
 import org.sam.tree.INode;
 import org.sam.tree.TraverseVisitor;
 import org.sam.tree.Tree;
+import org.sam.tree.TreeFactory;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by samuel on 05/08/14.
@@ -17,8 +18,8 @@ public class CrossoverTest {
 
     @Test
     public void coTest() {
-        Tree a = new FullTree();
-        Tree b = new FullTree();
+        Tree a = TreeFactory.fullTree();
+        Tree b = TreeFactory.fullTree();
 
         TraverseVisitor crossOverVisitorA = new TraverseVisitor();
         TraverseVisitor crossOverVisitorB = new TraverseVisitor();

@@ -5,7 +5,7 @@ import org.sam.game.Game;
 import org.sam.tree.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class TreeTest {
 
@@ -50,5 +50,15 @@ public class TreeTest {
         );
 
         assertEquals(tttttree.evaluate('o', 'x', game), -1l);
+    }
+
+    @Test
+    public void testEquals() throws Exception {
+        Tree aTree = new FullTree();
+        Tree copy = new Tree(aTree);
+
+        assertFalse(aTree == copy);
+        assertEquals(copy, aTree);
+        assertEquals(aTree, copy);
     }
 }
