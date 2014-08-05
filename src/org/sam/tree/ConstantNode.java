@@ -40,4 +40,21 @@ public class ConstantNode implements INode {
     public INode getDeepCopy() {
         return new ConstantNode(constant);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ConstantNode that = (ConstantNode) o;
+
+        if (constant != that.constant) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (constant ^ (constant >>> 32));
+    }
 }

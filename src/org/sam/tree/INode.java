@@ -8,4 +8,6 @@ import org.sam.game.Game;
 public interface INode {
     public INode getDeepCopy();
     public long evaluate(char playerColour, char enemyColour, Game game);
+
+    public boolean equals(Object o);
 }

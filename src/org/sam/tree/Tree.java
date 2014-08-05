@@ -30,6 +30,23 @@ public class Tree {
         return root.evaluate(playerColour, enemyColour, game);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tree tree = (Tree) o;
+
+        if (root != null ? !root.equals(tree.root) : tree.root != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return root != null ? root.hashCode() : 0;
+    }
+
     public INode getRoot() {
         return root;
     }

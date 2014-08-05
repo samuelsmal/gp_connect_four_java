@@ -48,6 +48,28 @@ public class ConditionalNode implements INode {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ConditionalNode that = (ConditionalNode) o;
+
+        if (elseNode != null ? !elseNode.equals(that.elseNode) : that.elseNode != null) return false;
+        if (ifNode != null ? !ifNode.equals(that.ifNode) : that.ifNode != null) return false;
+        if (thenNode != null ? !thenNode.equals(that.thenNode) : that.thenNode != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ifNode != null ? ifNode.hashCode() : 0;
+        result = 31 * result + (thenNode != null ? thenNode.hashCode() : 0);
+        result = 31 * result + (elseNode != null ? elseNode.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public long evaluate(char playerColour, char enemyColour, Game game) {
         return ifNode.evaluate(playerColour, enemyColour, game) >= 0 ? thenNode.evaluate(playerColour, enemyColour, game) : elseNode.evaluate(playerColour, enemyColour, game);
     }

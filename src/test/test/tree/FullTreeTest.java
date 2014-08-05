@@ -12,6 +12,7 @@ public class FullTreeTest {
     public void testInit() throws Exception {
         Tree fullTree = new FullTree(2);
 
+        // TODO: test depth
     }
 
 }
