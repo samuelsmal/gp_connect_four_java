@@ -31,6 +31,11 @@ abstract class BinaryOperationNode implements INode {
     }
 
     @Override
+    public void visit(INodeVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

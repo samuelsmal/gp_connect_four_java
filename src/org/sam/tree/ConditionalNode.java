@@ -78,4 +78,9 @@ public class ConditionalNode implements INode {
     public INode getDeepCopy() {
         return new ConditionalNode(ifNode.getDeepCopy(), thenNode.getDeepCopy(), elseNode.getDeepCopy());
     }
+
+    @Override
+    public void visit(INodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

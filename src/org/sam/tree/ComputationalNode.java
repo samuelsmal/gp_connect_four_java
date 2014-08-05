@@ -52,4 +52,9 @@ abstract class ComputationalNode implements INode {
         result = 31 * result + (y != null ? y.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public void visit(INodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }

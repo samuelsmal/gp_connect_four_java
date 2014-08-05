@@ -57,4 +57,9 @@ public class ConstantNode implements INode {
     public int hashCode() {
         return (int) (constant ^ (constant >>> 32));
     }
+
+    @Override
+    public void visit(INodeVisitor visitor) {
+        visitor.visit(this);
+    }
 }
