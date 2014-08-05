@@ -19,6 +19,12 @@ public class TraverseVisitor implements INodeVisitor {
         this.nodes = nodes;
     }
 
+    public TraverseVisitor(Tree tree) {
+        nodes = new ArrayList<INode>();
+
+        tree.getRoot().visit(this);
+    }
+
     public INode getRandomNode() {
         // 0 (inclusive) and the specified value (exclusive)
         return nodes.get(rand.nextInt(nodes.size()));
