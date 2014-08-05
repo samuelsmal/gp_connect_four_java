@@ -1,7 +1,5 @@
 package org.sam.tree;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
  * Created by samuel on 05/08/14.
  */
