@@ -15,7 +15,7 @@ public class SubtractionOperationNode extends BinaryOperationNode {
     }
 
     public String toString() {
-        return "((" + left.toString() + ")-(" + right.toString() + "))";
+        return "(" + left.toString() + ")-(" + right.toString() + ")";
     }
 
     @Override
