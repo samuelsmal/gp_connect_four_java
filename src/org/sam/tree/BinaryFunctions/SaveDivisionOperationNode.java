@@ -1,6 +1,8 @@
-package org.sam.tree;
+package org.sam.tree.BinaryFunctions;
 
-import org.sam.game.Game;
+import org.sam.tree.Leaf;
+
+import java.util.List;
 
 /**
  * Functional Node
@@ -10,14 +12,12 @@ public class SaveDivisionOperationNode extends BinaryOperationNode {
     public SaveDivisionOperationNode() {
         operationSign = "%";
     }
-    public SaveDivisionOperationNode(INode left, INode right) {
-        super(left, right);
-        operationSign = "%";
-    }
 
     @Override
-    public String toString() {
-        return "(" + right.toString() + " > 0 ? " + left.toString() + " / " + right.toString() + " : 1)";
+    public String print(List<Leaf> children) {
+        String rhs = children.get(1).toString();
+        return "(" + rhs + " > 0 ? "
+                + children.get(0).toString() + " / " + rhs + " : 1)";
     }
 
     @Override

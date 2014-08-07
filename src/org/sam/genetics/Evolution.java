@@ -1,11 +1,8 @@
 package org.sam.genetics;
 
 import org.sam.tree.INode;
-import org.sam.tree.NodeFactory;
-import org.sam.tree.TraverseVisitor;
 import org.sam.tree.Tree;
 
-import javax.xml.soap.Node;
 import java.util.Random;
 
 /**
@@ -26,6 +23,7 @@ public class Evolution {
      * @param rhs
      */
     public static void crossOver(Tree lhs, Tree rhs) {
+        /*
         TraverseVisitor lhsVisitor = new TraverseVisitor(lhs);
         TraverseVisitor rhsVisitor = new TraverseVisitor(rhs);
 
@@ -34,7 +32,7 @@ public class Evolution {
         INode tmp = rNode;
 
         rNode = lNode;
-        lNode = tmp;
+        lNode = tmp;*/
     }
 
     /**
@@ -43,10 +41,12 @@ public class Evolution {
      * @param tree
      */
     public static void mutation(Tree tree) {
+        /*
         TraverseVisitor treeVisitor = new TraverseVisitor(tree);
 
         INode node = treeVisitor.getRandomNode();
 
         node = NodeFactory.getRandomNode();
+        */
     }
 }

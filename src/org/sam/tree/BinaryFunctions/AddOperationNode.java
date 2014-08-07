@@ -1,6 +1,4 @@
-package org.sam.tree;
-
-import org.sam.game.Game;
+package org.sam.tree.BinaryFunctions;
 
 /**
  * Functional Node
@@ -8,11 +6,6 @@ import org.sam.game.Game;
  */
 public class AddOperationNode extends BinaryOperationNode {
     public AddOperationNode() {
-        operationSign = "+";
-    }
-
-    public AddOperationNode(INode left, INode right) {
-        super(left, right);
         operationSign = "+";
     }
 

@@ -5,10 +5,10 @@ package org.sam.tree;
  */
 public class TreeFactory {
     public static Tree fullTree() {
-        return new Tree(NodeFactory.getRandomNode());
+        return new Tree(LeafFactory.randomFullLeaf());
     }
 
     public static Tree fullTree(long depth) {
-        return new Tree(NodeFactory.getRandomNode(depth));
+        return new Tree(LeafFactory.randomFullLeaf(depth));
     }
 }
