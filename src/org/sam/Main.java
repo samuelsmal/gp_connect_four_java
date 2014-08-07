@@ -3,6 +3,7 @@ package org.sam;
 import org.sam.game.GPTreePlayer;
 import org.sam.game.Game;
 import org.sam.game.HumanPlayer;
+import org.sam.game.RandomPlayer;
 import org.sam.genetics.Evolution;
 import org.sam.tree.*;
 import org.sam.tree.BinaryFunctions.AddOperationNode;
@@ -20,11 +21,12 @@ public class Main {
         HumanPlayer p2 = new HumanPlayer();
 
         GPTreePlayer gpTreePlayer = new GPTreePlayer(TreeFactory.fullTree(5));
+        RandomPlayer randomPlayer = new RandomPlayer();
 
-        game.startGame(p1, gpTreePlayer);
+        game.startGame(randomPlayer, gpTreePlayer);
 
 
-
+        System.out.println("FirstPlayerColour: " + Game.FIRST_PLAYER_COLOUR);
         System.out.println("Player " + game.colourOfWinner() + " has won!\n" + game);
     }
 }
