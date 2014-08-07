@@ -8,23 +8,16 @@ import org.sam.game.Game;
  */
 public class MultiplicationOperationNode extends BinaryOperationNode {
     public MultiplicationOperationNode() {
+        operationSign = "*";
     }
 
     public MultiplicationOperationNode(INode left, INode right) {
         super(left, right);
-    }
-
-    public String toString() {
-        return "(" + left.toString() + ")*(" + right.toString() + ")";
+        operationSign = "*";
     }
 
     @Override
-    public long evaluate(char playerColour, char enemyColour, Game game) {
-        return left.evaluate(playerColour, enemyColour, game) * right.evaluate(playerColour, enemyColour, game);
-    }
-
-    @Override
-    public INode getDeepCopy() {
-        return new MultiplicationOperationNode(left.getDeepCopy(), right.getDeepCopy());
+    protected long doOperation(long leftValue, long rightValue) {
+        return leftValue * rightValue;
     }
 }

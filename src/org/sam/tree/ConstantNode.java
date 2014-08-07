@@ -59,7 +59,7 @@ public class ConstantNode implements INode {
     }
 
     @Override
-    public void visit(INodeVisitor visitor) {
+    public void accept(INodeVisitor visitor) {
         visitor.visit(this);
     }
 }

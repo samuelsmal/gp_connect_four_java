@@ -8,28 +8,20 @@ import org.sam.game.Game;
  */
 public class SaveDivisionOperationNode extends BinaryOperationNode {
     public SaveDivisionOperationNode() {
+        operationSign = "%";
     }
     public SaveDivisionOperationNode(INode left, INode right) {
         super(left, right);
+        operationSign = "%";
     }
 
+    @Override
     public String toString() {
-        return "(" + left.toString() + ")%(" + right.toString() + ")";
+        return "(" + right.toString() + " > 0 ? " + left.toString() + " / " + right.toString() + " : 1)";
     }
 
     @Override
-    public long evaluate(char playerColour, char enemyColour, Game game) {
-        long right_evaluation = right.evaluate(playerColour, enemyColour, game);
-
-        if (right_evaluation != 0) {
-            return left.evaluate(playerColour, enemyColour, game) / right_evaluation;
-        } else {
-            return 1;
-        }
-    }
-
-    @Override
-    public INode getDeepCopy() {
-        return new SaveDivisionOperationNode(left.getDeepCopy(), right.getDeepCopy());
+    protected long doOperation(long leftValue, long rightValue) {
+        return (rightValue > 0 ? leftValue / rightValue : 1);
     }
 }

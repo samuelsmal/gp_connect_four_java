@@ -22,7 +22,7 @@ public class TraverseVisitor implements INodeVisitor {
     public TraverseVisitor(Tree tree) {
         nodes = new ArrayList<INode>();
 
-        tree.getRoot().visit(this);
+        tree.getRoot().accept(this);
     }
 
     public INode getRandomNode() {
@@ -39,20 +39,25 @@ public class TraverseVisitor implements INodeVisitor {
     }
 
     @Override
+    public void visit(AbstractNode node) {
+
+    }
+
+    @Override
     public void visit(BinaryOperationNode node) {
         nodes.add(node);
 
-        node.getLeft().visit(this);
-        node.getRight().visit(this);
+        node.getLeft().accept(this);
+        node.getRight().accept(this);
     }
 
     @Override
     public void visit(ConditionalNode node) {
         nodes.add(node);
 
-        node.getIfNode().visit(this);
-        node.getThenNode().visit(this);
-        node.getElseNode().visit(this);
+        node.getIfNode().accept(this);
+        node.getThenNode().accept(this);
+        node.getElseNode().accept(this);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class TraverseVisitor implements INodeVisitor {
     public void visit(ComputationalNode node) {
         nodes.add(node);
 
-        node.getX().visit(this);
-        node.getY().visit(this);
+        node.getX().accept(this);
+        node.getY().accept(this);
     }
 }
