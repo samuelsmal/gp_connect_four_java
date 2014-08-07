@@ -41,14 +41,14 @@ public class Game {
         while (!hasEnded()) {
             if (firstPlayersTurn) {
                 try {
-                    insertStoneInColumn(firstPlayer.play(this), FIRST_PLAYER_COLOUR);
+                    insertStoneInColumn(firstPlayer.play(this, FIRST_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), FIRST_PLAYER_COLOUR);
                     firstPlayersTurn = false;
                 } catch (ColumnFullException e) {
                     System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
                 }
             } else {
                 try {
-                    insertStoneInColumn(secondPlayer.play(this), SECOND_PLAYER_COLOUR);
+                    insertStoneInColumn(secondPlayer.play(this, SECOND_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), SECOND_PLAYER_COLOUR);
                     firstPlayersTurn = true;
                 } catch (ColumnFullException e) {
                     System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
@@ -217,5 +217,25 @@ public class Game {
         }
 
         return stringBuilder.toString();
+    }
+
+    public char[][] getBoardCopy() {
+        char[][] boardCopy = new char[BOARD_HEIGHT][BOARD_WIDTH];
+
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                boardCopy[i][j] = board[i][j];
+            }
+        }
+
+        return boardCopy;
+    }
+
+    public char[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(char[][] board) {
+        this.board = board;
     }
 }

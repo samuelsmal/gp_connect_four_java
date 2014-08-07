@@ -17,18 +17,18 @@ public class HumanPlayer implements Player {
      * @return The chosen column [0, 7)
      */
     @Override
-    public int play(Game game) {
+    public int play(Game game, char ownColour, char enemyColour) {
         System.out.println(game);
-        System.out.println("Try move... (an integer from (including) 0 and (including) 6): ");
+        System.out.println("Enter an integer from (including) 0 to (including) 6. Your colour is " + ownColour);
 
-        int choosenColumn = -1;
+        int chosenColumn = -1;
 
         try {
-            choosenColumn =  Integer.parseInt(br.readLine());
+            chosenColumn =  Integer.parseInt(br.readLine());
         } catch(NumberFormatException | IOException e) {
             System.err.println("Invalid Format!" + e.getMessage());
         }
 
-        return choosenColumn;
+        return chosenColumn;
     }
 }

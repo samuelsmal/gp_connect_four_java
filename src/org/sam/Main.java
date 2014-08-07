@@ -1,5 +1,6 @@
 package org.sam;
 
+import org.sam.game.GPTreePlayer;
 import org.sam.game.Game;
 import org.sam.game.HumanPlayer;
 import org.sam.genetics.Evolution;
@@ -18,7 +19,9 @@ public class Main {
         HumanPlayer p1 = new HumanPlayer();
         HumanPlayer p2 = new HumanPlayer();
 
-        game.startGame(p1, p2);
+        GPTreePlayer gpTreePlayer = new GPTreePlayer(TreeFactory.fullTree(5));
+
+        game.startGame(p1, gpTreePlayer);
 
 
 
