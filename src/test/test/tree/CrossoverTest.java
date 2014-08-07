@@ -15,6 +15,10 @@ public class CrossoverTest {
 
     @Test
     public void coTest() {
+
+
+
+
         /*
         Tree a = TreeFactory.fullTree();
         Tree b = TreeFactory.fullTree();

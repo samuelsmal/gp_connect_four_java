@@ -1,7 +1,6 @@
 package org.sam.tree.Terminals;
 
 import org.sam.game.Game;
-import org.sam.tree.INode;
 import org.sam.tree.Leaf;
 
 import java.util.List;

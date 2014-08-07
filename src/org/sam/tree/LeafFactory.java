@@ -50,11 +50,11 @@ public class LeafFactory {
             int terminalRandomNumber = rand.nextInt(3);
 
             if (terminalRandomNumber <= 0) {
-                leaf.setElement(new ConstantNode((long)rand.nextInt(8)));
+                leaf.setElement(new ConstantNode((long)rand.nextInt(10))); // Random settings...
             } else if (terminalRandomNumber <= 1) {
-                leaf.setElement(new EnemyStoneAtNode(rand.nextInt(8), rand.nextInt(7)));
+                leaf.setElement(new EnemyStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
             } else {
-                leaf.setElement(new PlayerStoneAtNode(rand.nextInt(8), rand.nextInt(7)));
+                leaf.setElement(new PlayerStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
             }
         }
 

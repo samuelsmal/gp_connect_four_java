@@ -3,7 +3,6 @@ package org.sam.tree;
 import org.sam.game.Game;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

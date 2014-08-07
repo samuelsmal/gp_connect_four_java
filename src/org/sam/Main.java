@@ -1,5 +1,6 @@
 package org.sam;
 
+import org.sam.game.Game;
 import org.sam.genetics.Evolution;
 import org.sam.tree.*;
 import org.sam.tree.BinaryFunctions.AddOperationNode;
@@ -48,7 +49,15 @@ public class Main {
 
         System.out.println("Trees after:\n\t a:\n\t\t" + a + "\n\t b:\n\t\t" + b);
 
+        Tree mmmmutate = TreeFactory.fullTree(2);
 
+        System.out.println("Mutate tree:\n\t" + mmmmutate);
+        System.out.println("==>Eval:" + mmmmutate.evaluate('x', 'o', new Game()));
+
+        Evolution.mutate(mmmmutate);
+
+        System.out.println("Mutate tree:\n\t" + mmmmutate);
+        System.out.println("==>Eval:" + mmmmutate.evaluate('x', 'o', new Game()));
 
     }
 }
