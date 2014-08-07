@@ -5,7 +5,7 @@ import org.sam.game.Game;
 /**
  * Created by samuel on 27/07/14.
  */
-abstract class BinaryOperationNode extends AbstractNode {
+abstract class BinaryOperationNode implements INode {
     protected INode left;
     protected INode right;
 
@@ -34,6 +34,11 @@ abstract class BinaryOperationNode extends AbstractNode {
 
     public void setRight(INode right) {
         this.right = right;
+    }
+
+    @Override
+    public void accept(INodeVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override
