@@ -1,33 +1,63 @@
 package org.sam;
 
 import org.sam.game.Game;
+import org.sam.genetics.Evolution;
 import org.sam.tree.*;
+import org.sam.tree.BinaryFunctions.AddOperationNode;
+import org.sam.tree.BinaryFunctions.SubtractionOperationNode;
+import org.sam.tree.Terminals.ConstantNode;
+
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        Tree tree1 = new Tree(new AddOperationNode(new ConstantNode(1), new ConstantNode(2)));
+        Tree a = new Tree();
 
-        Tree tree2 = new Tree(new SubtractionOperationNode(new ConstantNode(3), new ConstantNode(4)));
+        Leaf aRoot = LeafFactory.addOperationLeaf();
+        aRoot.addChild(LeafFactory.constantLeaf(1));
+        aRoot.addChild(LeafFactory.constantLeaf(2));
 
-        System.out.print("Trees before:\n");
-        System.out.println("\ttree1: \n\t\t" + tree1);
-        System.out.println("\ttree2: \n\t\t" + tree2);
+        a.setRoot(aRoot);
 
-        TraverseVisitor lhsVisitor = new TraverseVisitor(tree1);
-        TraverseVisitor rhsVisitor = new TraverseVisitor(tree2);
+        Tree b = new Tree();
 
-        INode lNode = lhsVisitor.getNodes().get(lhsVisitor.getNodes().size() - 1);
-        INode rNode = rhsVisitor.getNodes().get(rhsVisitor.getNodes().size() - 1);
-        INode tmp = rNode;
+        Leaf bRoot = LeafFactory.addOperationLeaf();
+        bRoot.addChild(LeafFactory.constantLeaf(3));
+        bRoot.addChild(LeafFactory.constantLeaf(4));
 
-        rNode = lNode;
-        lNode = tmp;
+        b.setRoot(bRoot);
 
-        System.out.println("Selected nodes:\n\t" + lNode + "\n\t" + rNode);
+        System.out.println("Trees before:\n\t a:\n\t\t" + a + "\n\t b:\n\t\t" + b);
 
-        System.out.print("Trees after:\n");
-        System.out.println("\ttree1: \n\t\t" + tree1);
-        System.out.println("\ttree2: \n\t\t" + tree2);
+        List<Leaf> lhsFlattened = a.flatten();
+        List<Leaf> rhsFlattened = b.flatten();
+
+        Leaf lLeaf = lhsFlattened.get(0);
+        Leaf rLeaf = rhsFlattened.get(0);
+
+        Leaf tmpLeaf = new Leaf();
+
+        tmpLeaf.setElement(rLeaf.getElement());
+        tmpLeaf.setChildren(rLeaf.getChildren());
+
+        rLeaf.setElement(lLeaf.getElement());
+        rLeaf.setChildren(lLeaf.getChildren());
+
+        lLeaf.setElement(tmpLeaf.getElement());
+        lLeaf.setChildren(tmpLeaf.getChildren());
+
+        System.out.println("Trees after:\n\t a:\n\t\t" + a + "\n\t b:\n\t\t" + b);
+
+        Tree mmmmutate = TreeFactory.fullTree(2);
+
+        System.out.println("Mutate tree:\n\t" + mmmmutate);
+        System.out.println("==>Eval:" + mmmmutate.evaluate('x', 'o', new Game()));
+
+        Evolution.mutate(mmmmutate);
+
+        System.out.println("Mutate tree:\n\t" + mmmmutate);
+        System.out.println("==>Eval:" + mmmmutate.evaluate('x', 'o', new Game()));
+
     }
 }
