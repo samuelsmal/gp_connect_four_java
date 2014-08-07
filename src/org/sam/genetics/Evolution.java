@@ -1,8 +1,10 @@
 package org.sam.genetics;
 
 import org.sam.tree.INode;
+import org.sam.tree.Leaf;
 import org.sam.tree.Tree;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -23,16 +25,22 @@ public class Evolution {
      * @param rhs
      */
     public static void crossOver(Tree lhs, Tree rhs) {
-        /*
-        TraverseVisitor lhsVisitor = new TraverseVisitor(lhs);
-        TraverseVisitor rhsVisitor = new TraverseVisitor(rhs);
+        List<Leaf> lhsFlattened = lhs.flatten();
+        List<Leaf> rhsFlattened = lhs.flatten();
 
-        INode lNode = lhsVisitor.getRandomNode();
-        INode rNode = rhsVisitor.getRandomNode();
-        INode tmp = rNode;
+        Leaf lLeaf = lhsFlattened.get(rand.nextInt(lhsFlattened.size()));
+        Leaf rLeaf = rhsFlattened.get(rand.nextInt(rhsFlattened.size()));
 
-        rNode = lNode;
-        lNode = tmp;*/
+        Leaf tmpLeaf = new Leaf();
+
+        tmpLeaf.setElement(rLeaf.getElement());
+        tmpLeaf.setChildren(rLeaf.getChildren());
+
+        rLeaf.setElement(lLeaf.getElement());
+        rLeaf.setChildren(lLeaf.getChildren());
+
+        lLeaf.setElement(tmpLeaf.getElement());
+        lLeaf.setChildren(tmpLeaf.getChildren());
     }
 
     /**
@@ -40,13 +48,18 @@ public class Evolution {
      * method.
      * @param tree
      */
-    public static void mutation(Tree tree) {
-        /*
-        TraverseVisitor treeVisitor = new TraverseVisitor(tree);
+    public static void mutate(Tree tree) {
+        List<Leaf> treeFlattened = tree.flatten();
 
-        INode node = treeVisitor.getRandomNode();
+        pointMutation(treeFlattened.get(rand.nextInt(treeFlattened.size())));
 
-        node = NodeFactory.getRandomNode();
-        */
+    }
+
+    private static void pointMutation(Leaf leaf) {
+        // TODO: fill stub
+    }
+
+    private static void subTreeMutation(Leaf leaf) {
+        // TODO: fill stub
     }
 }
