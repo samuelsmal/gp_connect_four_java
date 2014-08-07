@@ -30,6 +30,36 @@ public class Game {
     }
 
     /**
+     *
+     * @param firstPlayer
+     * @param secondPlayer
+     * @return colour of winner 'x' for first, 'o' for second, '_' for a draw
+     */
+    public char startGame(Player firstPlayer, Player secondPlayer) {
+        boolean firstPlayersTurn = true;
+
+        while (!hasEnded()) {
+            if (firstPlayersTurn) {
+                try {
+                    insertStoneInColumn(firstPlayer.play(this, FIRST_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), FIRST_PLAYER_COLOUR);
+                    firstPlayersTurn = false;
+                } catch (ColumnFullException e) {
+                    System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
+                }
+            } else {
+                try {
+                    insertStoneInColumn(secondPlayer.play(this, SECOND_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), SECOND_PLAYER_COLOUR);
+                    firstPlayersTurn = true;
+                } catch (ColumnFullException e) {
+                    System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
+                }
+            }
+        }
+
+        return colourOfWinner();
+    }
+
+    /**
      * Returns colour of stone at the given coordinates.
      * Can be either
      *      '_' for nothing yet,
@@ -44,6 +74,10 @@ public class Game {
     }
 
     public void insertStoneInColumn(int col, char colour) throws ColumnFullException {
+        if (col < 0 || col > BOARD_WIDTH - 1) {
+            throw new ColumnFullException();
+        }
+
         for (int i = BOARD_HEIGHT - 1; i >= 0; i--) {
             if (board[i][col] == EMPTY_STONE_COLOUR) {
                 board[i][col] = colour;
@@ -73,6 +107,20 @@ public class Game {
     @Override
     public int hashCode() {
         return 0;
+    }
+
+    public boolean hasEnded() {
+        if (hasWinner()) {
+            return true;
+        }
+
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            if (getColourOfStone(i, 0) == EMPTY_STONE_COLOUR) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean hasWinner() {
@@ -147,17 +195,47 @@ public class Game {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < BOARD_HEIGHT; i++) {
+            stringBuilder.append("|");
             for (int j = 0; j < BOARD_WIDTH; j++) {
                 stringBuilder.append(board[i][j]);
+                stringBuilder.append("|");
             }
 
-            stringBuilder.append('\n');
+            stringBuilder.append("\n");
         }
 
+        stringBuilder.append("=");
+
         for (int i = 0; i < BOARD_WIDTH; i++) {
-            stringBuilder.append(i);
+            stringBuilder.append("==");
+        }
+
+        stringBuilder.append("\n").append("|");
+
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            stringBuilder.append(i).append("|");
         }
 
         return stringBuilder.toString();
+    }
+
+    public char[][] getBoardCopy() {
+        char[][] boardCopy = new char[BOARD_HEIGHT][BOARD_WIDTH];
+
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                boardCopy[i][j] = board[i][j];
+            }
+        }
+
+        return boardCopy;
+    }
+
+    public char[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(char[][] board) {
+        this.board = board;
     }
 }

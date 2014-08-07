@@ -121,4 +121,19 @@ public class GameTest {
         assertTrue(game.hasWinner());
         assertEquals(game.colourOfWinner(), 'x');
     }
+
+    @Test
+    public void testEnded() {
+        game = new Game(new char[][]{
+                {'x', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', 'x', '_', '_', '_'},
+                {'_', '_', 'x', 'o', '_', '_', '_'},
+                {'_', 'x', '_', 'x', '_', '_', '_'},
+                {'x', '_', '_', 'x', 'o', 'o', 'o'}
+        });
+
+        assertTrue(game.hasWinner());
+        assertTrue(game.hasEnded());
+    }
 }

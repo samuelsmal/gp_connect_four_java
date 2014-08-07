@@ -1,6 +1,9 @@
 package org.sam;
 
+import org.sam.game.GPTreePlayer;
 import org.sam.game.Game;
+import org.sam.game.HumanPlayer;
+import org.sam.game.RandomPlayer;
 import org.sam.genetics.Evolution;
 import org.sam.tree.*;
 import org.sam.tree.BinaryFunctions.AddOperationNode;
@@ -12,52 +15,18 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Tree a = new Tree();
+        Game game = new Game();
 
-        Leaf aRoot = LeafFactory.addOperationLeaf();
-        aRoot.addChild(LeafFactory.constantLeaf(1));
-        aRoot.addChild(LeafFactory.constantLeaf(2));
+        HumanPlayer p1 = new HumanPlayer();
+        HumanPlayer p2 = new HumanPlayer();
 
-        a.setRoot(aRoot);
+        GPTreePlayer gpTreePlayer = new GPTreePlayer(TreeFactory.fullTree(5));
+        RandomPlayer randomPlayer = new RandomPlayer();
 
-        Tree b = new Tree();
+        game.startGame(randomPlayer, gpTreePlayer);
 
-        Leaf bRoot = LeafFactory.addOperationLeaf();
-        bRoot.addChild(LeafFactory.constantLeaf(3));
-        bRoot.addChild(LeafFactory.constantLeaf(4));
 
-        b.setRoot(bRoot);
-
-        System.out.println("Trees before:\n\t a:\n\t\t" + a + "\n\t b:\n\t\t" + b);
-
-        List<Leaf> lhsFlattened = a.flatten();
-        List<Leaf> rhsFlattened = b.flatten();
-
-        Leaf lLeaf = lhsFlattened.get(0);
-        Leaf rLeaf = rhsFlattened.get(0);
-
-        Leaf tmpLeaf = new Leaf();
-
-        tmpLeaf.setElement(rLeaf.getElement());
-        tmpLeaf.setChildren(rLeaf.getChildren());
-
-        rLeaf.setElement(lLeaf.getElement());
-        rLeaf.setChildren(lLeaf.getChildren());
-
-        lLeaf.setElement(tmpLeaf.getElement());
-        lLeaf.setChildren(tmpLeaf.getChildren());
-
-        System.out.println("Trees after:\n\t a:\n\t\t" + a + "\n\t b:\n\t\t" + b);
-
-        Tree mmmmutate = TreeFactory.fullTree(2);
-
-        System.out.println("Mutate tree:\n\t" + mmmmutate);
-        System.out.println("==>Eval:" + mmmmutate.evaluate('x', 'o', new Game()));
-
-        Evolution.mutate(mmmmutate);
-
-        System.out.println("Mutate tree:\n\t" + mmmmutate);
-        System.out.println("==>Eval:" + mmmmutate.evaluate('x', 'o', new Game()));
-
+        System.out.println("FirstPlayerColour: " + Game.FIRST_PLAYER_COLOUR);
+        System.out.println("Player " + game.colourOfWinner() + " has won!\n" + game);
     }
 }
