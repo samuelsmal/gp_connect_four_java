@@ -1,10 +1,7 @@
 package test.tree;
 
 import org.junit.Test;
-import org.sam.tree.INode;
-import org.sam.tree.TraverseVisitor;
-import org.sam.tree.Tree;
-import org.sam.tree.TreeFactory;
+import org.sam.tree.*;
 
 import java.util.ArrayList;
 
