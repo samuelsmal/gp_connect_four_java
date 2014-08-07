@@ -2,6 +2,8 @@ package org.sam.tree;
 
 import org.sam.game.Game;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -30,5 +32,14 @@ public class Tree {
 
     public void setRoot(Leaf root) {
         this.root = root;
+    }
+
+    public List<Leaf> flatten() {
+        List<Leaf> leafs = new ArrayList<>();
+        leafs.add(root);
+
+        leafs.addAll(root.flatten());
+
+        return leafs;
     }
 }

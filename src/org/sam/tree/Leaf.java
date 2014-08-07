@@ -3,6 +3,7 @@ package org.sam.tree;
 import org.sam.game.Game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,4 +48,15 @@ public class Leaf {
     }
 
     public void addChild(Leaf child) { this.children.add(child); }
+
+    public List<Leaf> flatten() {
+        List<Leaf> leafs = new ArrayList<>();
+        leafs.add(this);
+
+        for(Leaf leaf : children) {
+            leafs.addAll(leaf.flatten());
+        }
+
+        return leafs;
+    }
 }
