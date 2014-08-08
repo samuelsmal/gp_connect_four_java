@@ -1,7 +1,6 @@
 package org.sam;
 
 import org.sam.Tournament.Tournament;
-import org.sam.Tournament.TournamentFactory;
 import org.sam.game.*;
 import org.sam.genetics.Evolution;
 
@@ -10,14 +9,27 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Evolution evolution = new Evolution(272);
+        Evolution evolution = new Evolution(400);
 
-        GPTreePlayer winner = evolution.evolve(5);
+        GPTreePlayer winner = evolution.evolve(50);
 
-        Game game = new Game();
+        int evolveWon = 0;
 
-        game.startGame(new HumanPlayer(), winner);
+        for (int i = 0; i < 50; i++) {
+            Game game1 = new Game();
+            game1.startGame(winner, new RandomPlayer());
 
-        System.out.println(game.colourOfWinner() + " has won!\n" + game);
+            if (game1.colourOfWinner() == Game.FIRST_PLAYER_COLOUR)
+                evolveWon++;
+
+            Game game2 = new Game();
+            game2.startGame(new RandomPlayer(), winner);
+
+            if (game1.colourOfWinner() == Game.SECOND_PLAYER_COLOUR)
+                evolveWon++;
+        }
+
+        System.out.println("Evolve won " + evolveWon + " times out of 100 against a random player");
+
     }
 }

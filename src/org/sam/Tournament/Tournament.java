@@ -14,20 +14,15 @@ import java.util.List;
  */
 public class Tournament {
     private List<PlayerEnlist> players;
+    private int numberOfPlayersToReturn;
 
-    public Tournament(List<GPTreePlayer> gpTreePlayers) {
+    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn) {
+        this.numberOfPlayersToReturn = numberOfPlayersToReturn;
+
         players = new ArrayList<>();
 
         for(GPTreePlayer gpTreePlayer : gpTreePlayers) {
             players.add(new PlayerEnlist(gpTreePlayer));
-        }
-    }
-
-    public Tournament(int numberOfPlayers) {
-        players = new ArrayList<>();
-
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new PlayerEnlist(new GPTreePlayer(TreeFactory.fullTree(4))));
         }
     }
 
@@ -36,7 +31,7 @@ public class Tournament {
      * @return the best 64 players
      */
     public List<GPTreePlayer> runTournament() {
-        System.out.println("Tournament has started!");
+        System.out.print("Tournament has started! ...");
 
         // check this out:
         // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads
@@ -63,12 +58,12 @@ public class Tournament {
         List<GPTreePlayer> winners = new ArrayList<>();
 
         // look out here...
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < numberOfPlayersToReturn; i++) {
             winners.add(players.get(i).player);
         }
 
         System.out.println("Tournament has ended! The winner won "
-                + players.get(0).matchesWon + "times. Second placed "
+                + players.get(0).matchesWon + " times. Second placed "
                 + players.get(1).matchesWon + " times.");
 
         return winners;

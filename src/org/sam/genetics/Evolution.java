@@ -25,20 +25,19 @@ public class Evolution {
 
     public GPTreePlayer evolve(int numberOfGenerations) {
         for (int i = 0; i < numberOfGenerations; i++) {
-            Tournament tournament = new Tournament(players);
+            System.out.println("Generation " + i + " / " + numberOfGenerations);
+
+            Tournament tournament = new Tournament(players, 20);
             players = tournament.runTournament();
 
-            System.out.println("Generation " + i + " player size " + players.size());
-
             toTheNextGeneration();
-            System.out.println("Generation " + i + " player size " + players.size());
         }
 
         return players.get(0);
     }
 
     private void toTheNextGeneration() {
-        int originalGenerationSize = players.size() / 2;
+        int originalGenerationSize = players.size();
 
         for (int i = 0; i < originalGenerationSize; i++) {
             for (int j = i+1; j < originalGenerationSize; j++) {
