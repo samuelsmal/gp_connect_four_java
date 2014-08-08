@@ -46,9 +46,15 @@ public class GPTreePlayer implements Player {
             }
         }
 
+        Collections.shuffle(decisions);
         Collections.sort(decisions);
 
         return decisions.get(decisions.size() - 1).column;
+    }
+
+    @Override
+    public String toString() {
+        return tree.toString();
     }
 
     private class Decision implements Comparable<Decision>{
