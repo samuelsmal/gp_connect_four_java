@@ -15,6 +15,14 @@ import java.util.List;
 public class Tournament {
     private List<PlayerEnlist> players;
 
+    public Tournament(List<GPTreePlayer> gpTreePlayers) {
+        players = new ArrayList<>();
+
+        for(GPTreePlayer gpTreePlayer : gpTreePlayers) {
+            players.add(new PlayerEnlist(gpTreePlayer));
+        }
+    }
+
     public Tournament(int numberOfPlayers) {
         players = new ArrayList<>();
 
@@ -23,7 +31,11 @@ public class Tournament {
         }
     }
 
-    public List<Player> runTournament() {
+    public List<GPTreePlayer> runTournament() {
+        // check this out:
+        // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads
+        // http://stackoverflow.com/questions/19749136/java-multithreading-one-big-loop
+        // http://stackoverflow.com/questions/5686200/parallelizing-a-for-loop
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.size(); j++) {
                 if (i != j) {
@@ -32,17 +44,19 @@ public class Tournament {
 
                     // A draw is still possible
                     if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
-                        players.get(i).matchesWon++;
+                        players.get(i).newMatchWon();
                     } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
-                        players.get(j).matchesWon++;
+                        players.get(j).newMatchWon();
                     }
                 }
             }
         }
 
+        System.out.println("run complete");
+
         Collections.sort(players);
 
-        List<Player> winners = new ArrayList<>();
+        List<GPTreePlayer> winners = new ArrayList<>();
 
         // look out here...
         for (int i = 0; i < 64; i++) {
@@ -54,16 +68,29 @@ public class Tournament {
     }
 
     private class PlayerEnlist implements Comparable<PlayerEnlist> {
-        public Player player;
+        public GPTreePlayer player;
         public int matchesWon = 0;
 
-        private PlayerEnlist(Player player) {
+        private PlayerEnlist(GPTreePlayer player) {
             this.player = player;
         }
 
+        // Synchronized not really needed. See Java Spec
+        public synchronized void newMatchWon() {
+            matchesWon++;
+        }
+
+        /**
+         * @param o the object to be compared.
+         * @return a negative integer, zero, or a positive integer as this object
+         * is less than, equal to, or greater than the specified object.
+         * @throws NullPointerException if the specified object is null
+         * @throws ClassCastException   if the specified object's type prevents it
+         *                              from being compared to this object.
+         */
         @Override
         public int compareTo(PlayerEnlist o) {
-            return matchesWon - o.matchesWon;
+            return o.matchesWon - matchesWon;
         }
     }
 }
