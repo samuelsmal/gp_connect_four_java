@@ -30,14 +30,23 @@ public class Main {
 
         Game game2 = new Game();
         game2.startGame(new RandomPlayer(), new GPPlayerRun0());
-        System.out.println("Player " + game2.colourOfWinner() + " has won!\n" + game);
 
         Game game3 = new Game();
         game3.startGame(new RandomPlayer(), new GPTreePlayer(TreeFactory.fullTree(10)));
-        System.out.println("Player " + game3.colourOfWinner() + " has won!\n" + game);
+        System.out.println("Player " + game3.colourOfWinner() + " has won!\n" + game3);
 
         Game gama4 = new Game();
         gama4.startGame(new GPTreePlayer(TreeFactory.fullTree(2)), new GPTreePlayer(TreeFactory.fullTree(12)));
-        System.out.println("Player " + gama4.colourOfWinner() + " has won!\n" + game);
+        System.out.println("Player " + gama4.colourOfWinner() + " has won!\n" + gama4);
+
+        Tree tree = new Tree(gpTreePlayer.getTree());
+
+        Evolution.mutate(tree);
+
+        GPTreePlayer mutationPlayer = new GPTreePlayer(tree);
+
+        Game gama5 = new Game();
+        gama5.startGame(gpTreePlayer, mutationPlayer);
+        System.out.println("Player " + gama5.colourOfWinner() + " has won!\n" + gama5);
     }
 }

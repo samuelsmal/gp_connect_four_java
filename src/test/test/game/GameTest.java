@@ -120,6 +120,54 @@ public class GameTest {
 
         assertTrue(game.hasWinner());
         assertEquals(game.colourOfWinner(), 'x');
+
+        game = new Game(new char[][]{
+                {'x', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', 'x', '_', '_', '_'},
+                {'_', '_', 'x', 'o', '_', '_', '_'},
+                {'_', 'x', 'o', 'x', '_', '_', '_'},
+                {'x', 'o', '_', 'x', 'o', 'o', 'o'}
+        });
+
+        assertTrue(game.hasWinner());
+        assertEquals(game.colourOfWinner(), 'x');
+
+        game = new Game(new char[][]{
+                {'x', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', 'x', '_', '_', '_'},
+                {'_', '_', 'x', 'o', '_', '_', '_'},
+                {'_', 'x', 'o', 'x', '_', '_', '_'},
+                {'x', 'o', 'o', 'x', 'o', 'o', 'o'}
+        });
+
+        assertTrue(game.hasWinner());
+        assertEquals(game.colourOfWinner(), 'x');
+
+        game = new Game(new char[][]{
+                {'x', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', 'x', '_', '_', '_'},
+                {'_', '_', '_', 'o', '_', '_', '_'},
+                {'_', 'x', 'o', 'x', '_', '_', '_'},
+                {'x', 'o', 'o', '_', 'o', 'o', 'o'}
+        });
+
+        assertFalse(game.hasWinner());
+        assertEquals(game.colourOfWinner(), '_');
+
+        game = new Game(new char[][]{
+                {'x', '_', '_', '_', '_', '_', '_'},
+                {'o', '_', '_', '_', '_', '_', '_'},
+                {'o', '_', '_', 'x', '_', '_', '_'},
+                {'o', '_', '_', 'o', '_', '_', '_'},
+                {'o', 'x', 'o', 'x', '_', '_', '_'},
+                {'x', 'o', 'o', '_', 'o', 'o', 'o'}
+        });
+
+        assertTrue(game.hasWinner());
+        assertEquals(game.colourOfWinner(), 'o');
     }
 
     @Test
