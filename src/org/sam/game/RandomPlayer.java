@@ -8,7 +8,7 @@ import java.util.Random;
  * Created by samuel on 07/08/14.
  */
 public class RandomPlayer implements Player {
-    private Random rand = new Random(System.currentTimeMillis());
+    private static Random rand = new Random(System.currentTimeMillis() + 1548763154878l);
 
     /**
      * @param game

@@ -15,7 +15,7 @@ import java.util.Random;
  * Created by samuel on 05/08/14.
  */
 public class LeafFactory {
-    private static final Random rand = new Random(System.currentTimeMillis());
+    private static final Random rand = new Random(System.currentTimeMillis() + 798234156l);
 
     public static Leaf randomFullLeaf() {
         return randomFullLeaf(0);
