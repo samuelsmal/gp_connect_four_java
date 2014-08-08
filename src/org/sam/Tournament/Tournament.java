@@ -31,7 +31,13 @@ public class Tournament {
         }
     }
 
+    /**
+     * Runs the tournament. Everybody against everybody else, two times.
+     * @return the best 64 players
+     */
     public List<GPTreePlayer> runTournament() {
+        System.out.println("Tournament has started!");
+
         // check this out:
         // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads
         // http://stackoverflow.com/questions/19749136/java-multithreading-one-big-loop
@@ -52,17 +58,18 @@ public class Tournament {
             }
         }
 
-        System.out.println("run complete");
-
         Collections.sort(players);
 
         List<GPTreePlayer> winners = new ArrayList<>();
 
         // look out here...
-        for (int i = 0; i < 64; i++) {
-            System.out.println("Player " + i + ": won " + players.get(i).matchesWon + " times.");
+        for (int i = 0; i < 32; i++) {
             winners.add(players.get(i).player);
         }
+
+        System.out.println("Tournament has ended! The winner won "
+                + players.get(0).matchesWon + "times. Second placed "
+                + players.get(1).matchesWon + " times.");
 
         return winners;
     }
