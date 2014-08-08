@@ -7,6 +7,7 @@ import org.sam.tree.TreeFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class Tournament {
      * @return the best 64 players
      */
     public List<GPTreePlayer> runTournament() {
-        System.out.print("Tournament has started! ...");
+        System.out.print("Tournament has started! " + new Date(System.currentTimeMillis()));
 
         // check this out:
         // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads

@@ -9,9 +9,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Evolution evolution = new Evolution(400);
+        Evolution evolution = new Evolution(200);
 
-        GPTreePlayer winner = evolution.evolve(50);
+        GPTreePlayer winner = evolution.evolve(10);
 
         int evolveWon = 0;
 
@@ -30,6 +30,7 @@ public class Main {
         }
 
         System.out.println("Evolve won " + evolveWon + " times out of 100 against a random player");
+        System.out.println(winner);
 
     }
 }
