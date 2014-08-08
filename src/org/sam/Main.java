@@ -4,22 +4,20 @@ import org.sam.Tournament.Tournament;
 import org.sam.Tournament.TournamentFactory;
 import org.sam.game.*;
 import org.sam.genetics.Evolution;
-import org.sam.tree.*;
-import org.sam.tree.BinaryFunctions.AddOperationNode;
-import org.sam.tree.BinaryFunctions.SubtractionOperationNode;
-import org.sam.tree.Terminals.ConstantNode;
 
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        Tournament tournament = TournamentFactory.tournament();
+        Evolution evolution = new Evolution(272);
 
-        List<Player> winners = tournament.runTournament();
+        GPTreePlayer winner = evolution.evolve(5);
 
         Game game = new Game();
 
-        game.startGame(new HumanPlayer(), winners.get(0));
+        game.startGame(new HumanPlayer(), winner);
+
+        System.out.println(game.colourOfWinner() + " has won!\n" + game);
     }
 }
