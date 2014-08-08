@@ -9,6 +9,6 @@ public class TournamentFactory {
     }
 
     public static Tournament tournament() {
-        return new Tournament(2014);
+        return new Tournament(2048);
     }
 }
