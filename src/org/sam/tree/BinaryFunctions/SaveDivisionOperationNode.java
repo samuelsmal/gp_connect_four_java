@@ -1,5 +1,6 @@
 package org.sam.tree.BinaryFunctions;
 
+import org.sam.tree.INode;
 import org.sam.tree.Leaf;
 
 import java.util.List;
@@ -11,6 +12,11 @@ import java.util.List;
 public class SaveDivisionOperationNode extends BinaryOperationNode {
     public SaveDivisionOperationNode() {
         operationSign = "%";
+    }
+
+    @Override
+    public INode getCopy() {
+        return new SaveDivisionOperationNode();
     }
 
     @Override

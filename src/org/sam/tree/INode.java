@@ -11,4 +11,5 @@ public interface INode {
     //public INode getDeepCopy();
     public long evaluate(char playerColour, char enemyColour, Game game, List<Leaf> children);
     public String print(List<Leaf> children);
+    public INode getCopy();
 }

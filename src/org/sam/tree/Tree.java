@@ -15,6 +15,10 @@ public class Tree {
 
     public Tree(Leaf root) { this.root = root; }
 
+    public Tree(Tree other) {
+        root = new Leaf(other.getRoot());
+    }
+
     @Override
     public String toString() {
         return root.toString();

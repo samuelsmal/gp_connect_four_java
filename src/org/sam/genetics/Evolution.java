@@ -1,5 +1,6 @@
 package org.sam.genetics;
 
+import org.sam.Random.GPRandom;
 import org.sam.tree.BinaryFunctions.AddOperationNode;
 import org.sam.tree.BinaryFunctions.MultiplicationOperationNode;
 import org.sam.tree.BinaryFunctions.SaveDivisionOperationNode;
@@ -21,7 +22,7 @@ import java.util.Random;
  * Created by samuel on 05/08/14.
  */
 public class Evolution {
-    private static final Random rand =  new Random(System.currentTimeMillis());
+    private static final GPRandom rand = GPRandom.INSTANCE;
 
     /**
      * Traverses each given tree, chooses a random node in each and swaps them

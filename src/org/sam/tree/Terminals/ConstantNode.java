@@ -31,6 +31,11 @@ public class ConstantNode implements INode {
     }
 
     @Override
+    public INode getCopy() {
+        return new ConstantNode(constant);
+    }
+
+    @Override
     public String print(List<Leaf> children) { return Long.toString(constant); }
 
     @Override

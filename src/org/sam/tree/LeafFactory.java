@@ -1,5 +1,6 @@
 package org.sam.tree;
 
+import org.sam.Random.GPRandom;
 import org.sam.tree.BinaryFunctions.AddOperationNode;
 import org.sam.tree.BinaryFunctions.MultiplicationOperationNode;
 import org.sam.tree.BinaryFunctions.SaveDivisionOperationNode;
@@ -15,7 +16,7 @@ import java.util.Random;
  * Created by samuel on 05/08/14.
  */
 public class LeafFactory {
-    private static final Random rand = new Random(System.currentTimeMillis() + 798234156l);
+    private static final GPRandom rand = GPRandom.INSTANCE;
 
     public static Leaf randomFullLeaf() {
         return randomFullLeaf(0);

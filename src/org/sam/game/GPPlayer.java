@@ -1,5 +1,7 @@
 package org.sam.game;
 
+import org.sam.Random.GPRandom;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +36,7 @@ abstract class GPPlayer implements Player {
             }
         }
 
-        Collections.shuffle(decisions);
+        Collections.shuffle(decisions, GPRandom.INSTANCE.getRand());
         Collections.sort(decisions);
 
         return decisions.get(decisions.size() - 1).column;

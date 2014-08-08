@@ -1,6 +1,7 @@
 package org.sam.tree.Terminals;
 
 import org.sam.game.Game;
+import org.sam.tree.INode;
 import org.sam.tree.Leaf;
 
 import java.util.List;
@@ -13,6 +14,11 @@ public class EnemyStoneAtNode extends ComputationalNode {
     public EnemyStoneAtNode() { super(); }
 
     public EnemyStoneAtNode(int x, int y) { super(x, y); }
+
+    @Override
+    public INode getCopy() {
+        return new EnemyStoneAtNode(x, y);
+    }
 
     @Override
     public String print(List<Leaf> children) {

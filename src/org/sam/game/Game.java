@@ -48,7 +48,7 @@ public class Game {
                 }
             } else {
                 try {
-                    insertStoneInColumn(secondPlayer.play(this, SECOND_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), SECOND_PLAYER_COLOUR);
+                    insertStoneInColumn(secondPlayer.play(this, SECOND_PLAYER_COLOUR, FIRST_PLAYER_COLOUR), SECOND_PLAYER_COLOUR);
                     firstPlayersTurn = true;
                 } catch (ColumnFullException e) {
                     System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
@@ -169,13 +169,13 @@ public class Game {
     private char checkWest(int x, int y) { return checkVector(x, y, -1, 0); }
 
     private char checkVector(int x, int y, int dx, int dy) {
-        if (getColourOfStone(x, y) == EMPTY_STONE_COLOUR) {
+        char stoneColourToCheckAgainst = getColourOfStone(x, y);
+
+        if (stoneColourToCheckAgainst == EMPTY_STONE_COLOUR) {
             return EMPTY_STONE_COLOUR;
         }
 
         int correctStones = 1;
-
-        char stoneColourToCheckAgainst = getColourOfStone(x, y);
 
         for (int i = 1; (i < 4)
                 && (x + i*dx < BOARD_WIDTH)

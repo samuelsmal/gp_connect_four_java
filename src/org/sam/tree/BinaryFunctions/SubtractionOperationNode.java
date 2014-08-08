@@ -1,5 +1,7 @@
 package org.sam.tree.BinaryFunctions;
 
+import org.sam.tree.INode;
+
 /**
  * Functional Node
  * Created by samuel on 27/07/14.
@@ -7,6 +9,11 @@ package org.sam.tree.BinaryFunctions;
 public class SubtractionOperationNode extends BinaryOperationNode {
     public SubtractionOperationNode() {
         operationSign = "-";
+    }
+
+    @Override
+    public INode getCopy() {
+        return new SubtractionOperationNode();
     }
 
     @Override

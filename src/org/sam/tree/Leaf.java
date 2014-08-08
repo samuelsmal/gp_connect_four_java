@@ -21,6 +21,15 @@ public class Leaf {
         this.element = element;
     }
 
+    public Leaf(Leaf other) {
+        element = other.getElement().getCopy();
+        children = new ArrayList<>();
+
+        for (Leaf l : other.getChildren()) {
+            children.add(new Leaf(l));
+        }
+    }
+
     @Override
     public String toString() {
         return element.print(children);

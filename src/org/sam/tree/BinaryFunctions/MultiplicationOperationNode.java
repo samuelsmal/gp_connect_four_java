@@ -1,5 +1,7 @@
 package org.sam.tree.BinaryFunctions;
 
+import org.sam.tree.INode;
+
 /**
  * Function Node
  * Created by samuel on 27/07/14.
@@ -7,6 +9,11 @@ package org.sam.tree.BinaryFunctions;
 public class MultiplicationOperationNode extends BinaryOperationNode {
     public MultiplicationOperationNode() {
         operationSign = "*";
+    }
+
+    @Override
+    public INode getCopy() {
+        return new MultiplicationOperationNode();
     }
 
     @Override

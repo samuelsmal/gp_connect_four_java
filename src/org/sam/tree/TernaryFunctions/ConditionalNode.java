@@ -13,6 +13,11 @@ public class ConditionalNode implements INode {
     public ConditionalNode() {}
 
     @Override
+    public INode getCopy() {
+        return new ConditionalNode();
+    }
+
+    @Override
     public long evaluate(char playerColour, char enemyColour, Game game, List<Leaf> children) {
         return children.get(0).evaluate(playerColour, enemyColour, game) >= 0
                 ? children.get(1).evaluate(playerColour, enemyColour, game)

@@ -1,5 +1,6 @@
 package org.sam.game;
 
+import org.sam.Random.GPRandom;
 import org.sam.tree.Tree;
 
 import java.util.ArrayList;
@@ -19,6 +20,14 @@ public class GPTreePlayer implements Player {
     }
 
     public GPTreePlayer(Tree tree) {
+        this.tree = tree;
+    }
+
+    public Tree getTree() {
+        return tree;
+    }
+
+    public void setTree(Tree tree) {
         this.tree = tree;
     }
 
@@ -46,7 +55,7 @@ public class GPTreePlayer implements Player {
             }
         }
 
-        Collections.shuffle(decisions);
+        Collections.shuffle(decisions, GPRandom.INSTANCE.getRand());
         Collections.sort(decisions);
 
         return decisions.get(decisions.size() - 1).column;

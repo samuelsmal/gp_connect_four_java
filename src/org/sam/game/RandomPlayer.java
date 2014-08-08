@@ -1,5 +1,7 @@
 package org.sam.game;
 
+import org.sam.Random.GPRandom;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,7 +10,7 @@ import java.util.Random;
  * Created by samuel on 07/08/14.
  */
 public class RandomPlayer implements Player {
-    private static Random rand = new Random(System.currentTimeMillis() + 1548763154878l);
+    private static final GPRandom rand = GPRandom.INSTANCE;
 
     /**
      * @param game
