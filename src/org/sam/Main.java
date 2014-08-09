@@ -9,9 +9,9 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Evolution evolution = new Evolution(200);
+        Evolution evolution = new Evolution(100);
 
-        GPTreePlayer winner = evolution.evolve(10);
+        GPTreePlayer winner = evolution.evolve(3);
 
         int evolveWon = 0;
 

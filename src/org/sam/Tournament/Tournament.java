@@ -3,6 +3,7 @@ package org.sam.Tournament;
 import org.sam.game.GPTreePlayer;
 import org.sam.game.Game;
 import org.sam.game.Player;
+import org.sam.game.RandomPlayer;
 import org.sam.tree.TreeFactory;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class Tournament {
      * @return the best 64 players
      */
     public List<GPTreePlayer> runTournament() {
-        System.out.print("Tournament has started! " + new Date(System.currentTimeMillis()));
+        System.out.print("Tournament has started! --- " + new Date(System.currentTimeMillis()) + " --- ");
 
         // check this out:
         // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads
@@ -51,6 +52,22 @@ public class Tournament {
                         players.get(j).newMatchWon();
                     }
                 }
+            }
+        }
+
+        for (int i = 0; i < players.size(); i++) {
+            Game game = new Game();
+            game.startGame(players.get(i).player, new RandomPlayer());
+
+            Game game2 = new Game();
+            game.startGame(new RandomPlayer(), players.get(i).player);
+
+            if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
+                players.get(i).newMatchWon();
+            }
+
+            if (game2.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
+                players.get(i).newMatchWon();
             }
         }
 

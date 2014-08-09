@@ -39,9 +39,9 @@ public class LeafFactory {
                 leaf.setElement(new SubtractionOperationNode());
             } else if (functionRandomNumber <= 2) {
                 leaf.setElement(new MultiplicationOperationNode());
-            } else if (functionRandomNumber <= 3) {
+            } /*else if (functionRandomNumber <= 3) {
                 leaf.setElement(new SaveDivisionOperationNode());
-            } else {
+            }*/ else {
                 // Ternary element
                 leaf.setElement(new ConditionalNode());
                 leaf.addChild(randomFullLeaf(depth - 1));
@@ -51,7 +51,7 @@ public class LeafFactory {
             int terminalRandomNumber = rand.nextInt(3);
 
             if (terminalRandomNumber <= 0) {
-                leaf.setElement(new ConstantNode((long)rand.nextInt(10))); // Random settings...
+                leaf.setElement(new ConstantNode((long)rand.nextInt(10) - 5)); // Random settings...
             } else if (terminalRandomNumber <= 1) {
                 leaf.setElement(new EnemyStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
             } else {

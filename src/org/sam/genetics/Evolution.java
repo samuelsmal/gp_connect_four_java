@@ -19,7 +19,7 @@ public class Evolution {
         players = new ArrayList<>();
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new GPTreePlayer(TreeFactory.fullTree(10)));
+            players.add(new GPTreePlayer(TreeFactory.fullTree(5)));
         }
     }
 
@@ -27,7 +27,7 @@ public class Evolution {
         for (int i = 0; i < numberOfGenerations; i++) {
             System.out.println("Generation " + (i + 1) + " / " + numberOfGenerations);
 
-            Tournament tournament = new Tournament(players, 20);
+            Tournament tournament = new Tournament(players, 64);
             players = tournament.runTournament();
 
             toTheNextGeneration();
@@ -50,10 +50,14 @@ public class Evolution {
                 players.add(new GPTreePlayer(t2));
             }
 
-            Tree t3 = new Tree(players.get(i).getTree());
-            Genetics.mutate(t3);
+            boolean mutationOn = false;
+            if (mutationOn) {
 
-            players.add(new GPTreePlayer(t3));
+                Tree t3 = new Tree(players.get(i).getTree());
+                Genetics.mutate(t3);
+
+                players.add(new GPTreePlayer(t3));
+            }
         }
     }
 }
