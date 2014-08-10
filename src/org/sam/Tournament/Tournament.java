@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by samuel on 08/08/14.
@@ -35,14 +39,78 @@ public class Tournament {
     public List<GPTreePlayer> runTournament() {
         System.out.print("Tournament has started! --- " + new Date(System.currentTimeMillis()) + " --- ");
 
+        try {
+            playerTournament();
+        } catch (InterruptedException  e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        randomPlayerTournament();
+
+        Collections.sort(players);
+
+        List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
+
+        // look out here...
+        System.out.println("The best evolved players: ");
+        for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
+            winners.add(players.get(i).player);
+            System.out.println("\t" + i + " : " + players.get(i).matchesWon);
+        }
+
+        return winners;
+    }
+
+    private void randomPlayerTournament() {
+        Game game = new Game();
+        RandomPlayer randomPlayer = new RandomPlayer();
+
+        for(PlayerEnlist player : players) {
+            game.startGame(player.player, randomPlayer);
+            if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
+                player.newMatchWon(winAgainstRandomPlayerWeight);
+            }
+
+            game.startGame(randomPlayer, player.player);
+            if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
+                player.newMatchWon(winAgainstRandomPlayerWeight);
+            }
+        }
+    }
+
+    private void playerTournament() throws InterruptedException, ExecutionException {
+
+        int threads = Runtime.getRuntime().availableProcessors();
+        ExecutorService service = Executors.newFixedThreadPool(threads);
+
         // check this out:
         // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads
         // http://stackoverflow.com/questions/19749136/java-multithreading-one-big-loop
         // http://stackoverflow.com/questions/5686200/parallelizing-a-for-loop
+
+        final int groupSize = players.size() / threads;
+
+
+        for (int i = 0; i < threads; i++) {
+            final int start = i * groupSize;
+            final int end = (i + 1) * groupSize;
+
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    groupTournament(start, end);
+                }
+            });
+        }
+
+
+        Game game = new Game();
+        // TODO: Make groups out of x players. This takes too long. And doesn't produce anything.
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.size(); j++) {
                 if (i != j) {
-                    Game game = new Game();
                     game.startGame(players.get(i).player, players.get(j).player);
 
                     // A draw is still possible
@@ -55,36 +123,26 @@ public class Tournament {
             }
         }
 
-        for (int i = 0; i < players.size(); i++) {
-            Game game = new Game();
-            game.startGame(players.get(i).player, new RandomPlayer());
+        service.shutdown();
+    }
 
-            Game game2 = new Game();
-            game.startGame(new RandomPlayer(), players.get(i).player);
+    private void groupTournament(int start, int end) {
+        Game game = new Game();
 
-            if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
-                players.get(i).newMatchWon();
-            }
+        for (int i = start; i < players.size() && i < end; i++) {
+            for (int j = start; j < players.size() && j < end; j++) {
+                if (i != j) {
+                    game.startGame(players.get(i).player, players.get(j).player);
 
-            if (game2.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
-                players.get(i).newMatchWon();
+                    // A draw is still possible
+                    if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
+                        players.get(i).newMatchWon();
+                    } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
+                        players.get(j).newMatchWon();
+                    }
+                }
             }
         }
-
-        Collections.sort(players);
-
-        List<GPTreePlayer> winners = new ArrayList<>();
-
-        // look out here...
-        for (int i = 0; i < numberOfPlayersToReturn; i++) {
-            winners.add(players.get(i).player);
-        }
-
-        System.out.println("Tournament has ended! The winner won "
-                + players.get(0).matchesWon + " times. Second placed "
-                + players.get(1).matchesWon + " times.");
-
-        return winners;
     }
 
     private class PlayerEnlist implements Comparable<PlayerEnlist> {
@@ -98,6 +156,12 @@ public class Tournament {
         // Synchronized not really needed. See Java Spec
         public synchronized void newMatchWon() {
             matchesWon++;
+        }
+
+        public void newMatchWon(int weight) {
+            synchronized (this) {
+                matchesWon += weight;
+            }
         }
 
         /**
