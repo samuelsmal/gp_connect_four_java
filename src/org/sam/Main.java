@@ -9,28 +9,34 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Evolution evolution = new Evolution(100);
+        Evolution evolution = new Evolution.Builder().numberOfPlayers(20).numberOfGenerations(3).build();
 
-        GPTreePlayer winner = evolution.evolve(3);
+        GPTreePlayer winner = evolution.evolve();
 
-        int evolveWon = 0;
+        int evolveWonFirst = 0;
+        int evolveWonSecond = 0;
+
+        RandomPlayer randomPlayer = new RandomPlayer();
+        Game game = new Game();
 
         for (int i = 0; i < 50; i++) {
-            Game game1 = new Game();
-            game1.startGame(winner, new RandomPlayer());
+            game.startGame(winner, randomPlayer);
 
-            if (game1.colourOfWinner() == Game.FIRST_PLAYER_COLOUR)
-                evolveWon++;
+            if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR)
+                evolveWonFirst++;
 
-            Game game2 = new Game();
-            game2.startGame(new RandomPlayer(), winner);
+            game.startGame(randomPlayer, winner);
 
-            if (game1.colourOfWinner() == Game.SECOND_PLAYER_COLOUR)
-                evolveWon++;
+            if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR)
+                evolveWonSecond++;
         }
 
-        System.out.println("Evolve won " + evolveWon + " times out of 100 against a random player");
-        System.out.println(winner);
+        System.out.println("Evolved player won "
+                + (evolveWonFirst + evolveWonSecond)
+                + " times out of 100 against a random player."
+                + "\n\t As first player: " + evolveWonFirst
+                + "\n\t As second player: " + evolveWonSecond);
+        System.out.println("Evolved code:\n" + winner);
 
     }
 }
