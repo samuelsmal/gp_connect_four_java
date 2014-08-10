@@ -36,6 +36,15 @@ public class Game {
      * @return colour of winner 'x' for first, 'o' for second, '_' for a draw
      */
     public char startGame(Player firstPlayer, Player secondPlayer) {
+        board = new char[][]{
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'}
+        };
+
         boolean firstPlayersTurn = true;
 
         while (!hasEnded()) {

@@ -14,21 +14,70 @@ import java.util.List;
  */
 public class Evolution {
     private List<GPTreePlayer> players;
+    private int numberOfGenerations;
+    private boolean mutationOn = false;
+    private int winAgainstRandomPlayerWeight;
+    private int numberOfPlayersToReturn;
 
-    public Evolution(int numberOfPlayers) {
-        players = new ArrayList<>();
+    public static class Builder {
+        private int numberOfGenerations;
+        private int numberOfPlayers;
+        private boolean mutationOn = false;
+        private int winAgainstRandomPlayerWeight = 1;
 
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new GPTreePlayer(TreeFactory.fullTree(5)));
+        public Builder () {}
+
+        public Builder numberOfGenerations(int numberOfGenerations) {
+            this.numberOfGenerations = numberOfGenerations;
+            return this;
+        }
+
+        public Builder numberOfPlayers(int numberOfPlayers) {
+            this.numberOfPlayers = numberOfPlayers;
+            return this;
+        }
+
+        public Builder mutationOn(boolean mutationOn) {
+            this.mutationOn = mutationOn;
+            return this;
+        }
+
+        public Builder winAgainstRandomPlayerWeight(int winAgainstRandomPlayerWeight) {
+            this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
+            return this;
+        }
+
+        public Evolution build() {
+            return new Evolution(numberOfPlayers, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight);
         }
     }
 
-    public GPTreePlayer evolve(int numberOfGenerations) {
+    public Evolution(int numberOfPlayers, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight) {
+        this.numberOfGenerations = numberOfGenerations;
+        this.mutationOn = mutationOn;
+        this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
+
+        if (mutationOn) {
+            numberOfPlayersToReturn = (int)Math.sqrt((double)numberOfPlayers);
+        } else {
+            numberOfPlayersToReturn = (int)(0.5d * (1 + Math.sqrt(4d * (double)numberOfPlayers + 1)));
+        }
+
+
+        players = new ArrayList<>(numberOfPlayers);
+        System.out.println("players : " + players.size() + " (" + numberOfPlayers + ")" );
+
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            players.add(new GPTreePlayer(TreeFactory.fullTree(8)));
+        }
+    }
+
+    public GPTreePlayer evolve() {
         for (int i = 0; i < numberOfGenerations; i++) {
             System.out.println("Generation " + (i + 1) + " / " + numberOfGenerations);
 
-            Tournament tournament = new Tournament(players, 64);
-            players = tournament.runTournament();
+            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight).runTournament();
 
             toTheNextGeneration();
         }
@@ -50,9 +99,7 @@ public class Evolution {
                 players.add(new GPTreePlayer(t2));
             }
 
-            boolean mutationOn = false;
             if (mutationOn) {
-
                 Tree t3 = new Tree(players.get(i).getTree());
                 Genetics.mutate(t3);
 

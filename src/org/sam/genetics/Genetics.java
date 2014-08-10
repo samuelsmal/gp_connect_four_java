@@ -105,9 +105,7 @@ public class Genetics {
         } else if (functionRandomNumber <= 3) {
             leaf.setElement(new SaveDivisionOperationNode());
         } else {
-            // Ternary element
             leaf.setElement(new ConditionalNode());
-            leaf.addChild(LeafFactory.randomFullLeaf());
         }
     }
 

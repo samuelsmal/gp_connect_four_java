@@ -21,11 +21,13 @@ import java.util.concurrent.Executors;
 public class Tournament {
     private List<PlayerEnlist> players;
     private int numberOfPlayersToReturn;
+    private int winAgainstRandomPlayerWeight;
 
-    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn) {
+    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight) {
         this.numberOfPlayersToReturn = numberOfPlayersToReturn;
+        this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
 
-        players = new ArrayList<>();
+        players = new ArrayList<>(gpTreePlayers.size());
 
         for(GPTreePlayer gpTreePlayer : gpTreePlayers) {
             players.add(new PlayerEnlist(gpTreePlayer));
