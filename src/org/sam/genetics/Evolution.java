@@ -20,10 +20,11 @@ public class Evolution {
     private int numberOfPlayersToReturn;
 
     public static class Builder {
-        private int numberOfGenerations;
-        private int numberOfPlayers;
+        private int numberOfGenerations = 100;
+        private int numberOfPlayers = 500;
         private boolean mutationOn = false;
         private int winAgainstRandomPlayerWeight = 1;
+        private int depthOfTrees = 8;
 
         public Builder () {}
 
@@ -47,12 +48,17 @@ public class Evolution {
             return this;
         }
 
+        public Builder depthOfTrees(int depthOfTrees) {
+            this.depthOfTrees = depthOfTrees;
+            return this;
+        }
+
         public Evolution build() {
-            return new Evolution(numberOfPlayers, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight);
+            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight);
         }
     }
 
-    public Evolution(int numberOfPlayers, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight) {
+    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight) {
         this.numberOfGenerations = numberOfGenerations;
         this.mutationOn = mutationOn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
@@ -63,13 +69,19 @@ public class Evolution {
             numberOfPlayersToReturn = (int)(0.5d * (1 + Math.sqrt(4d * (double)numberOfPlayers + 1)));
         }
 
+        System.out.println(
+                "Settings:"
+                + "\n\tnumberOfPlayers: " + numberOfPlayers
+                + "\n\tnumberOfGenerations: " + numberOfGenerations
+                + "\n\tdepthOfTrees: " + depthOfTrees
+                + "\n\tmutationOn: " + mutationOn
+                + "\n\twinAgainstRandomPlayerWeight: " + winAgainstRandomPlayerWeight
+        );
 
         players = new ArrayList<>(numberOfPlayers);
-        System.out.println("players : " + players.size() + " (" + numberOfPlayers + ")" );
-
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new GPTreePlayer(TreeFactory.fullTree(8)));
+            players.add(new GPTreePlayer(TreeFactory.fullTree(depthOfTrees)));
         }
     }
 

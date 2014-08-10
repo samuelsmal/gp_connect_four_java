@@ -9,7 +9,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Evolution evolution = new Evolution.Builder().numberOfPlayers(20).numberOfGenerations(3).build();
+        Evolution evolution = new Evolution.Builder().numberOfPlayers(500).numberOfGenerations(50).build();
 
         GPTreePlayer winner = evolution.evolve();
 
