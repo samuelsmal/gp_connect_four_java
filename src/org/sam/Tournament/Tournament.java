@@ -94,6 +94,7 @@ public class Tournament {
 
         final int groupSize = players.size() / threads;
 
+        Collections.shuffle(players);
 
         for (int i = 0; i < threads; i++) {
             final int start = i * groupSize;
