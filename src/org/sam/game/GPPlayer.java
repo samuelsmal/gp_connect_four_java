@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by samuel on 08/08/14.
  */
-abstract class GPPlayer implements Player {
+public abstract class GPPlayer implements Player {
 
     /**
      * @param game
@@ -41,6 +41,29 @@ abstract class GPPlayer implements Player {
 
         return decisions.get(decisions.size() - 1).column;
     }
+
+    protected long enemyCanWinInOneRound(char enemyColour, Game game) {
+        Game copy = new Game();
+
+        for (int i = 0; i < Game.BOARD_WIDTH; i++) {
+            if (game.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
+                copy.setBoard(game.getBoardCopy());
+
+                try {
+                    copy.insertStoneInColumn(i, enemyColour);
+                } catch (ColumnFullException e) {
+                    e.printStackTrace();
+                }
+
+                if (game.colourOfWinner() == enemyColour) {
+                    return 1;
+                }
+            }
+        }
+
+        return 0;
+    }
+
 
     protected abstract long evalGame(char playerColour, char enemyColour, Game game);
 

@@ -5,12 +5,8 @@ import org.sam.tree.BinaryFunctions.AddOperationNode;
 import org.sam.tree.BinaryFunctions.MultiplicationOperationNode;
 import org.sam.tree.BinaryFunctions.SaveDivisionOperationNode;
 import org.sam.tree.BinaryFunctions.SubtractionOperationNode;
-import org.sam.tree.Terminals.ConstantNode;
-import org.sam.tree.Terminals.EnemyStoneAtNode;
-import org.sam.tree.Terminals.PlayerStoneAtNode;
+import org.sam.tree.Terminals.*;
 import org.sam.tree.TernaryFunctions.ConditionalNode;
-
-import java.util.Random;
 
 /**
  * Created by samuel on 05/08/14.
@@ -48,14 +44,66 @@ public class LeafFactory {
             }
         } else {
             // Terminals
-            int terminalRandomNumber = rand.nextInt(3);
+            int terminalRandomNumber = rand.nextInt(9); // 0 <= rand < n
 
             if (terminalRandomNumber <= 0) {
-                leaf.setElement(new ConstantNode((long)rand.nextInt(10) - 5)); // Random settings...
+                leaf.setElement(new ConstantNode((long)rand.nextInt(9) - 5)); // Random settings...
+            } /*else if (terminalRandomNumber <= 1) {
+                leaf.setElement(new EnemyStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
+            } else if (terminalRandomNumber <= 2){
+                leaf.setElement(new PlayerStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
+            } */else if (terminalRandomNumber <= 2) {
+                leaf.setElement(new EnemyCanWinInOneRound());
+            } else if (terminalRandomNumber <= 4) {
+                leaf.setElement(new PlayerCanWinInOneRound());
+            } else if (terminalRandomNumber <= 6) {
+                leaf.setElement(new EnemyCanWinInTwoRounds());
+            } else {
+                leaf.setElement(new PlayerCanWinInOneRound());
+            }
+        }
+
+        return leaf;
+    }
+
+    public static Leaf randomHalfLeaf(long maxDepth) {
+        Leaf leaf = new Leaf();
+
+        if (maxDepth > 1) {
+            // Functions
+            int functionRandomNumber = rand.nextInt(5); // 0 <= rand < n // 4 functions
+
+            // Each function node is at least binary.
+            leaf.addChild(randomHalfLeaf(rand.nextInt((int) maxDepth - 1)));
+            leaf.addChild(randomHalfLeaf(rand.nextInt((int) maxDepth - 1)));
+
+            if (functionRandomNumber <= 0) {
+                leaf.setElement(new AddOperationNode());
+            } else if (functionRandomNumber <= 1) {
+                leaf.setElement(new SubtractionOperationNode());
+            } else if (functionRandomNumber <= 2) {
+                leaf.setElement(new MultiplicationOperationNode());
+            } /*else if (functionRandomNumber <= 3) {
+                leaf.setElement(new SaveDivisionOperationNode());
+            }*/ else {
+                // Ternary element
+                leaf.setElement(new ConditionalNode());
+                leaf.addChild(randomHalfLeaf(rand.nextInt((int) maxDepth - 1)));
+            }
+        } else {
+            // Terminals
+            int terminalRandomNumber = rand.nextInt(7); // 0 <= rand < n
+
+            if (terminalRandomNumber <= 0) {
+                leaf.setElement(new ConstantNode((long)rand.nextInt(9) - 5)); // Random settings...
             } else if (terminalRandomNumber <= 1) {
                 leaf.setElement(new EnemyStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
-            } else {
+            } else if (terminalRandomNumber <= 2){
                 leaf.setElement(new PlayerStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
+            } else if (terminalRandomNumber <= 4) {
+                leaf.setElement(new EnemyCanWinInOneRound());
+            } else {
+                leaf.setElement(new PlayerCanWinInOneRound());
             }
         }
 
