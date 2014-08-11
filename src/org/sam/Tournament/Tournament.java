@@ -73,11 +73,35 @@ public class Tournament {
     }
 
     private void randomPlayerTournament() {
+        int threads = Runtime.getRuntime().availableProcessors();
+        ExecutorService service = Executors.newFixedThreadPool(threads);
+
+        final int groupSize = players.size() / threads;
+
+        for (int i = 0; i < threads; i++) {
+            final int start = i * groupSize;
+            final int end = (i + 1) * groupSize;
+
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    randomPlayerGroup(start, end);
+                }
+            });
+        }
+
+        service.shutdown();
+
+    }
+
+    private void randomPlayerGroup(int start, int end) {
         Game game = new Game();
         RandomPlayer randomPlayer = new RandomPlayer();
 
-        for(PlayerEnlist player : players) {
-            for (int i = 0; i < 2; i++) {
+        for (int i = start; i < end && i < players.size(); i++) {
+            PlayerEnlist player = players.get(i);
+
+            for (int j = 0; j < 100; j++) {
                 game.startGame(player.player, randomPlayer);
                 if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
                     player.newRandomMatchWon();
