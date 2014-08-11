@@ -17,13 +17,17 @@ public class Evolution {
     private int numberOfGenerations;
     private boolean mutationOn = false;
     private int winAgainstRandomPlayerWeight;
+    private int winAgainstGPPlayerWeight;
+    private int drawWeight;
     private int numberOfPlayersToReturn;
 
     public static class Builder {
         private int numberOfGenerations = 100;
         private int numberOfPlayers = 500;
         private boolean mutationOn = false;
-        private int winAgainstRandomPlayerWeight = 1;
+        private int winAgainstRandomPlayerWeight = 2;
+        private int winAgainstGPPlayerWeight = 2;
+        private int drawWeight = 1;
         private int depthOfTrees = 8;
 
         public Builder () {}
@@ -53,15 +57,22 @@ public class Evolution {
             return this;
         }
 
+        public Builder winAgainstGPPlayerWeight(int winAgainstGPPlayerWeight) {
+            this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
+            return this;
+        }
+
         public Evolution build() {
-            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight);
+            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight);
         }
     }
 
-    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight) {
+    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight) {
         this.numberOfGenerations = numberOfGenerations;
         this.mutationOn = mutationOn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
+        this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
+        this.drawWeight = drawWeight;
 
         if (mutationOn) {
             numberOfPlayersToReturn = (int)Math.sqrt((double)numberOfPlayers);
@@ -76,22 +87,29 @@ public class Evolution {
                 + "\n\tdepthOfTrees: " + depthOfTrees
                 + "\n\tmutationOn: " + mutationOn
                 + "\n\twinAgainstRandomPlayerWeight: " + winAgainstRandomPlayerWeight
+                + "\n\twinAgainstGPPlayerWeight: " + winAgainstGPPlayerWeight
+                + "\n\tdrawWeight: " + drawWeight
         );
 
         players = new ArrayList<>(numberOfPlayers);
 
         for (int i = 0; i < numberOfPlayers; i++) {
             players.add(new GPTreePlayer(TreeFactory.fullTree(depthOfTrees)));
+            //players.add(new GPTreePlayer(TreeFactory.halfTree(depthOfTrees))); // TODO make this an option
         }
     }
 
     public GPTreePlayer evolve() {
         for (int i = 0; i < numberOfGenerations; i++) {
             System.out.println("Generation " + (i + 1) + " / " + numberOfGenerations);
+            System.out.println("\t" + players.get(0));
 
-            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight).runTournament();
+            if (i > 1) toTheNextGeneration();
 
-            toTheNextGeneration();
+            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight).runTournament();
+
+            System.out.println("\tWinner count of nodes: " + players.get(0).getTree().flatten().size());
+
         }
 
         return players.get(0);

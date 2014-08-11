@@ -1,5 +1,6 @@
 package org.sam.Tournament;
 
+import org.sam.Random.GPRandom;
 import org.sam.game.GPTreePlayer;
 import org.sam.game.Game;
 import org.sam.game.Player;
@@ -22,10 +23,14 @@ public class Tournament {
     private List<PlayerEnlist> players;
     private int numberOfPlayersToReturn;
     private int winAgainstRandomPlayerWeight;
+    private int winAgainstGPPlayerWeight;
+    private int drawWeight;
 
-    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight) {
+    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight) {
         this.numberOfPlayersToReturn = numberOfPlayersToReturn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
+        this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
+        this.drawWeight = drawWeight;
 
         players = new ArrayList<>(gpTreePlayers.size());
 
@@ -40,6 +45,8 @@ public class Tournament {
      */
     public List<GPTreePlayer> runTournament() {
         System.out.print("Tournament has started! --- " + new Date(System.currentTimeMillis()) + " --- ");
+
+        Collections.shuffle(players, GPRandom.INSTANCE.getRand());
 
         try {
             playerTournament();
@@ -56,10 +63,10 @@ public class Tournament {
         List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
 
         // look out here...
-        System.out.println("The best evolved players: ");
+        System.out.println("\nThe best evolved players: (against other evolved players / against random player)");
         for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
             winners.add(players.get(i).player);
-            System.out.println("\t" + i + " : " + players.get(i).matchesWon);
+            System.out.println("\t" + i + " : " + players.get(i).matchesWonAgainstPlayer + " / " + players.get(i).matchesWonAgainstRandom);
         }
 
         return winners;
@@ -70,14 +77,20 @@ public class Tournament {
         RandomPlayer randomPlayer = new RandomPlayer();
 
         for(PlayerEnlist player : players) {
-            game.startGame(player.player, randomPlayer);
-            if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
-                player.newMatchWon(winAgainstRandomPlayerWeight);
-            }
+            for (int i = 0; i < 2; i++) {
+                game.startGame(player.player, randomPlayer);
+                if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
+                    player.newRandomMatchWon();
+                } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
+                    player.newRandomMatchDraw();
+                }
 
-            game.startGame(randomPlayer, player.player);
-            if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
-                player.newMatchWon(winAgainstRandomPlayerWeight);
+                game.startGame(randomPlayer, player.player);
+                if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
+                    player.newRandomMatchWon();
+                } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
+                    player.newRandomMatchDraw();
+                }
             }
         }
     }
@@ -86,11 +99,6 @@ public class Tournament {
 
         int threads = Runtime.getRuntime().availableProcessors();
         ExecutorService service = Executors.newFixedThreadPool(threads);
-
-        // check this out:
-        // http://stackoverflow.com/questions/12845881/java-splitting-work-to-multiple-threads
-        // http://stackoverflow.com/questions/19749136/java-multithreading-one-big-loop
-        // http://stackoverflow.com/questions/5686200/parallelizing-a-for-loop
 
         final int groupSize = players.size() / threads;
 
@@ -108,24 +116,6 @@ public class Tournament {
             });
         }
 
-
-        Game game = new Game();
-        // TODO: Make groups out of x players. This takes too long. And doesn't produce anything.
-        for (int i = 0; i < players.size(); i++) {
-            for (int j = 0; j < players.size(); j++) {
-                if (i != j) {
-                    game.startGame(players.get(i).player, players.get(j).player);
-
-                    // A draw is still possible
-                    if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
-                        players.get(i).newMatchWon();
-                    } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
-                        players.get(j).newMatchWon();
-                    }
-                }
-            }
-        }
-
         service.shutdown();
     }
 
@@ -139,9 +129,12 @@ public class Tournament {
 
                     // A draw is still possible
                     if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
-                        players.get(i).newMatchWon();
+                        players.get(i).newPlayerMatchWon();
                     } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
-                        players.get(j).newMatchWon();
+                        players.get(j).newPlayerMatchWon();
+                    } else {
+                        players.get(i).newPlayerMatchDraw();
+                        players.get(j).newPlayerMatchDraw();
                     }
                 }
             }
@@ -150,21 +143,42 @@ public class Tournament {
 
     private class PlayerEnlist implements Comparable<PlayerEnlist> {
         public GPTreePlayer player;
-        public int matchesWon = 0;
+        public int matchesWonAgainstPlayer = 0;
+        public int matchesWonAgainstRandom = 0;
+        public int drawAgainstPlayer = 0;
+        public int drawAgainstRandom = 0;
 
         private PlayerEnlist(GPTreePlayer player) {
             this.player = player;
         }
 
-        // Synchronized not really needed. See Java Spec
-        public synchronized void newMatchWon() {
-            matchesWon++;
+        public void newPlayerMatchWon() {
+            synchronized (this) {
+                matchesWonAgainstPlayer++;
+            }
         }
 
-        public void newMatchWon(int weight) {
+        public void newRandomMatchWon(){
             synchronized (this) {
-                matchesWon += weight;
+                matchesWonAgainstRandom++;
             }
+        }
+
+        public void newPlayerMatchDraw() {
+            synchronized (this) {
+                drawAgainstPlayer++;
+            }
+        }
+
+        public void newRandomMatchDraw() {
+            synchronized (this) {
+                drawAgainstRandom++;
+            }
+        }
+
+
+        public int overall() {
+            return matchesWonAgainstRandom * winAgainstRandomPlayerWeight + matchesWonAgainstPlayer * winAgainstGPPlayerWeight + drawWeight * (drawAgainstRandom + drawAgainstPlayer);
         }
 
         /**
@@ -177,7 +191,7 @@ public class Tournament {
          */
         @Override
         public int compareTo(PlayerEnlist o) {
-            return o.matchesWon - matchesWon;
+            return o.overall() - overall();
         }
     }
 }
