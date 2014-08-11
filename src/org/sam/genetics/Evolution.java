@@ -120,6 +120,8 @@ public class Evolution {
 
         for (int i = 0; i < originalGenerationSize; i++) {
             for (int j = i+1; j < originalGenerationSize; j++) {
+                // This has to be done this way.
+                // As each cross-over changes the tree, it exchanges the leafs.
                 Tree t1 = new Tree(players.get(i).getTree());
                 Tree t2 = new Tree(players.get(j).getTree());
 
