@@ -22,7 +22,7 @@ public class PlayerStoneAtNode extends ComputationalNode {
 
     @Override
     public String print(List<Leaf> children) {
-        return "(playerColour == game.getColourOfStone((int)" + x + ", (int)" + y + ") ? 1 : 0)\n";
+        return "(playerColour == game.getColourOfStone(" + x + ", " + y + ") ? 1 : 0)";
     }
 
     @Override
