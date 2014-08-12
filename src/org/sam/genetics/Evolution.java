@@ -94,7 +94,10 @@ public class Evolution {
         players = new ArrayList<>(numberOfPlayers);
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            players.add(new GPTreePlayer(TreeFactory.fullTree(depthOfTrees)));
+            Tree tree = TreeFactory.fullTree(depthOfTrees);
+            tree.setTitle(Integer.toString(i));
+
+            players.add(new GPTreePlayer(tree));
             //players.add(new GPTreePlayer(TreeFactory.halfTree(depthOfTrees))); // TODO make this an option
         }
     }

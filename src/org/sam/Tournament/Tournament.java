@@ -66,7 +66,7 @@ public class Tournament {
         List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
 
         // look out here...
-        System.out.println("\nThe best evolved players: (against other evolved players / against random player / draws GPP / draws RP / matches)");
+        System.out.println("\nThe best evolved players: (against other evolved players / against random player / draws GPP / draws RP / matches / treetitle)");
         for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
             PlayerEnlist p = players.get(i);
 
@@ -76,7 +76,8 @@ public class Tournament {
                     + p.matchesWonAgainstRandom + " / "
                     + p.drawAgainstPlayer + " / "
                     + p.drawAgainstRandom + " / "
-                    + p.matches
+                    + p.matches + " / "
+                    + p.player.getTree().getTitle()
             );
         }
 

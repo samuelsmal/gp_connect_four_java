@@ -47,6 +47,9 @@ public class Genetics {
 
         lLeaf.setElement(tmpLeaf.getElement());
         lLeaf.setChildren(tmpLeaf.getChildren());
+
+        lhs.setTitle(lhs.getTitle() + " c " + rhs.getTitle());
+        rhs.setTitle(rhs.getTitle() + " c " + lhs.getTitle());
     }
 
     /**
@@ -60,8 +63,10 @@ public class Genetics {
         Leaf toMutate = treeFlattened.get(rand.nextInt(treeFlattened.size()));
 
         if (rand.nextInt(10) <= 8) {
+            tree.setTitle(tree.getTitle() + "PM");
             pointMutation(toMutate);
         } else {
+            tree.setTitle(tree.getTitle() + "STM");
             subTreeMutation(toMutate);
         }
     }
