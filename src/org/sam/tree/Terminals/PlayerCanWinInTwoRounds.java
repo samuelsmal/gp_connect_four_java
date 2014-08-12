@@ -22,9 +22,13 @@ public class PlayerCanWinInTwoRounds implements INode {
             return 1;
         }
 
+        Game copy = new Game();
+        Game innerCopy = new Game();
+
         for (int i = 0; i < Game.BOARD_WIDTH; i++) {
+
             if (game.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
-                Game copy = new Game(game);
+                copy.setBoard(game.getBoardCopy());
 
                 try {
                     copy.insertStoneInColumn(i, enemyColour);
@@ -36,8 +40,8 @@ public class PlayerCanWinInTwoRounds implements INode {
                     return -1;
                 } else {
                     for (int j = 0; j < Game.BOARD_WIDTH; j++) {
-                        if (game.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
-                            Game innerCopy = new Game(copy);
+                        if (copy.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
+                            innerCopy.setBoard(copy.getBoardCopy());
 
                             try {
                                 innerCopy.insertStoneInColumn(i, playerColour);

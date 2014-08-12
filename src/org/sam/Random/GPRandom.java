@@ -6,7 +6,8 @@ import java.util.Random;
  * Created by samuel on 08/08/14.
  */
 public enum GPRandom {
-    INSTANCE(new Random(System.currentTimeMillis() + 4568321548855l));
+    // To provide reproducible outcomes.
+    INSTANCE(new Random(4568321548855l));
 
     private Random rand;
 
@@ -14,7 +15,7 @@ public enum GPRandom {
         this.rand = rand;
     }
 
-    public int nextInt(int n) {
+    public synchronized int nextInt(int n) {
         return rand.nextInt(n);
     }
 
