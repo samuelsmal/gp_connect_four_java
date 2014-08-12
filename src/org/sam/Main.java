@@ -21,9 +21,9 @@ public class Main {
 
     private static void evol() {
         Evolution evolution = new Evolution.Builder()
-                .numberOfPlayers(300)
+                .numberOfPlayers(200)
                 .numberOfGenerations(50)
-                .depthOfTrees(5)
+                .depthOfTrees(4)
                 .winAgainstRandomPlayerWeight(2)
                 .build();
 
@@ -37,7 +37,8 @@ public class Main {
         RandomPlayer randomPlayer = new RandomPlayer();
         Game game = new Game();
 
-        for (int i = 0; i < 50; i++) {
+        int rounds = 100;
+        for (int i = 0; i < rounds; i++) {
             game.startGame(winner, randomPlayer);
 
             if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
@@ -59,7 +60,9 @@ public class Main {
                 + "\n\t As first player: " + evolveWonFirst
                 + "\n\t As second player: " + evolveWonSecond
                 + "\n\t Draw as first player: " + drawFirst
-                + "\n\t Draw as second player: " + drawSecond);
+                + "\n\t Draw as second player: " + drawSecond
+                + "\n\t Total: " + (evolveWonFirst + evolveWonSecond)
+                + "\n\t Matches played: " + (2 * rounds));
         System.out.println("Evolved code:\n" + winner);
     }
 }

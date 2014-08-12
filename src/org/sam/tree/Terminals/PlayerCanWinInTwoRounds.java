@@ -25,8 +25,8 @@ public class PlayerCanWinInTwoRounds implements INode {
         Game copy = new Game();
         Game innerCopy = new Game();
 
+        // First checking if the opponent can win.
         for (int i = 0; i < Game.BOARD_WIDTH; i++) {
-
             if (game.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
                 copy.setBoard(game.getBoardCopy());
 
@@ -38,25 +38,39 @@ public class PlayerCanWinInTwoRounds implements INode {
 
                 if (copy.colourOfWinner() == enemyColour) {
                     return -1;
-                } else {
-                    for (int j = 0; j < Game.BOARD_WIDTH; j++) {
-                        if (copy.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
-                            innerCopy.setBoard(copy.getBoardCopy());
+                }
+            }
+        }
 
-                            try {
-                                innerCopy.insertStoneInColumn(i, playerColour);
-                            } catch (ColumnFullException e) {
-                                e.printStackTrace();
-                            }
+        // If the opponent cannot win in his round, check if the player can win in his next round.
+        for (int i = 0; i < Game.BOARD_WIDTH; i++) {
+            if (game.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
+                copy.setBoard(game.getBoardCopy());
 
-                            if (innerCopy.colourOfWinner() == playerColour) {
-                                return 1;
-                            }
+                try {
+                    copy.insertStoneInColumn(i, enemyColour);
+                } catch (ColumnFullException e) {
+                    e.printStackTrace();
+                }
+
+                for (int j = 0; j < Game.BOARD_WIDTH; j++) {
+                    if (copy.getColourOfStone(j, 0) == Game.EMPTY_STONE_COLOUR) {
+                        innerCopy.setBoard(copy.getBoardCopy());
+
+                        try {
+                            innerCopy.insertStoneInColumn(j, playerColour);
+                        } catch (ColumnFullException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (innerCopy.colourOfWinner() == playerColour) {
+                            return 1;
                         }
                     }
                 }
             }
         }
+
 
         return 0;
     }

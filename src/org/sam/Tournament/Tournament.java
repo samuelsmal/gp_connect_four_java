@@ -20,6 +20,7 @@ public class Tournament {
     private int winAgainstRandomPlayerWeight;
     private int winAgainstGPPlayerWeight;
     private int drawWeight;
+    private int groupSize;
 
     public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight) {
         this.numberOfPlayersToReturn = numberOfPlayersToReturn;
@@ -27,11 +28,16 @@ public class Tournament {
         this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
         this.drawWeight = drawWeight;
 
+        groupSize = gpTreePlayers.size() / Runtime.getRuntime().availableProcessors();
+
+        if (groupSize == 0) {
+            groupSize = gpTreePlayers.size();
+        }
+
         players = new ArrayList<>(gpTreePlayers.size());
 
-
         for(GPTreePlayer gpTreePlayer : gpTreePlayers) {
-            players.add(new PlayerEnlist(gpTreePlayer));
+            players.add(new PlayerEnlist(gpTreePlayer, groupSize));
         }
 
     }
@@ -47,20 +53,20 @@ public class Tournament {
 
         try {
             playerTournament();
+            randomPlayerTournament();
         } catch (InterruptedException  e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        randomPlayerTournament();
 
         Collections.sort(players);
 
         List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
 
         // look out here...
-        System.out.println("\nThe best evolved players: (against other evolved players / against random player / draws GPP / draws RP / matches (200 of them against a random player))");
+        System.out.println("\nThe best evolved players: (against other evolved players / against random player / draws GPP / draws RP / matches)");
         for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
             PlayerEnlist p = players.get(i);
 
@@ -80,8 +86,6 @@ public class Tournament {
     private void randomPlayerTournament() {
         int threads = Runtime.getRuntime().availableProcessors();
         ExecutorService service = Executors.newFixedThreadPool(threads);
-
-        final int groupSize = players.size() / threads;
 
         for (int i = 0; i < threads; i++) {
             final int start = i * groupSize;
@@ -112,7 +116,7 @@ public class Tournament {
         for (int i = start; i < end && i < players.size(); i++) {
             PlayerEnlist player = players.get(i);
 
-            for (int j = 0; j < 100; j++) {
+            for (int j = 0; j < groupSize; j++) {
                 game.startGame(player.player, randomPlayer);
                 if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
                     player.newRandomMatchWon();
@@ -134,8 +138,6 @@ public class Tournament {
 
         int threads = Runtime.getRuntime().availableProcessors();
         ExecutorService service = Executors.newFixedThreadPool(threads);
-
-        final int groupSize = players.size() / threads;
 
         Collections.shuffle(players, GPRandom.INSTANCE.getRand());
 
@@ -194,16 +196,16 @@ public class Tournament {
         public int matchesWonAgainstRandom = 0;
         public int drawAgainstPlayer = 0;
         public int drawAgainstRandom = 0;
-        public int matches = 200; // 2 * times hundred against the random player
+        public int matches = 1; // 2 * times hundred against the random player
 
-        private PlayerEnlist(GPTreePlayer player) {
+        private PlayerEnlist(GPTreePlayer player, int groupSize) {
 
             this.player = player;
             matchesWonAgainstRandom = 0;
             matchesWonAgainstPlayer = 0;
             drawAgainstPlayer = 0;
             drawAgainstRandom = 0;
-            matches = 200;
+            matches = groupSize;
         }
 
         public void newMatch() {

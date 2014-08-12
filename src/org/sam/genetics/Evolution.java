@@ -104,9 +104,9 @@ public class Evolution {
             System.out.println("Generation " + (i + 1) + " / " + numberOfGenerations);
             System.out.println("\t" + players.get(0));
 
-            if (i > 1) toTheNextGeneration();
 
             players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight).runTournament();
+            toTheNextGeneration();
 
             System.out.println("\tWinner count of nodes: " + players.get(0).getTree().flatten().size());
 
