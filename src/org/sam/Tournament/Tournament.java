@@ -37,7 +37,7 @@ public class Tournament {
         players = new ArrayList<>(gpTreePlayers.size());
 
         for(GPTreePlayer gpTreePlayer : gpTreePlayers) {
-            players.add(new PlayerEnlist(gpTreePlayer, groupSize));
+            players.add(new PlayerEnlist(gpTreePlayer));
         }
 
     }
@@ -118,6 +118,7 @@ public class Tournament {
 
             for (int j = 0; j < groupSize; j++) {
                 game.startGame(player.player, randomPlayer);
+                player.newMatch();
                 if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
                     player.newRandomMatchWon();
                 } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
@@ -125,6 +126,7 @@ public class Tournament {
                 }
 
                 game.startGame(randomPlayer, player.player);
+                player.newMatch();
                 if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
                     player.newRandomMatchWon();
                 } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
@@ -196,16 +198,15 @@ public class Tournament {
         public int matchesWonAgainstRandom = 0;
         public int drawAgainstPlayer = 0;
         public int drawAgainstRandom = 0;
-        public int matches = 1; // 2 * times hundred against the random player
+        public int matches = 0; // 2 * times hundred against the random player
 
-        private PlayerEnlist(GPTreePlayer player, int groupSize) {
+        private PlayerEnlist(GPTreePlayer player) {
 
             this.player = player;
             matchesWonAgainstRandom = 0;
             matchesWonAgainstPlayer = 0;
             drawAgainstPlayer = 0;
             drawAgainstRandom = 0;
-            matches = groupSize;
         }
 
         public void newMatch() {
