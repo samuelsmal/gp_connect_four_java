@@ -43,7 +43,8 @@ Can take a long while with the right/wrong options.
 2. Implement the required methods (see below).
 3. Insert into the `play()`-method of the `Main`-class in the `Main.java`-file an new Instance of your new class created in step 2, replace one of the old players. The argument sequence corresponds to the start player.
 
-     @Override
-        protected long evalGame(char playerColour, char enemyColour, Game game) {
-         // PAST CODE FROM PROGRAMM HERE
-        }
+
+    @Override
+    protected long evalGame(char playerColour, char enemyColour, Game game) {
+      // PAST CODE FROM PROGRAMM HERE
+    }
