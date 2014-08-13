@@ -18,12 +18,14 @@ public class Tournament {
     private int winAgainstGPPlayerWeight;
     private int drawWeight;
     private int groupSize;
+    private boolean maxApproach;
 
-    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight) {
+    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight, boolean maxApproach) {
         this.numberOfPlayersToReturn = numberOfPlayersToReturn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
         this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
         this.drawWeight = drawWeight;
+        this.maxApproach = maxApproach;
 
         groupSize = gpTreePlayers.size() / Runtime.getRuntime().availableProcessors();
 
@@ -58,65 +60,75 @@ public class Tournament {
         }
 
         List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
-        System.out.println("\nThe best evolved players: (wins EP / wins RP / draws EP / draws RP / matches / treetitle)");
+        System.out.println("\nThe best evolved players: (wins EP / wins RP / draws EP / draws RP / matches / treetitle_geneticCount)");
         PlayerEnlist p;
 
-        // using a weighted approach, see overall()-method below for more information
-        /*Collections.sort(players);
-        for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
-            p = players.get(i);
+        if (!maxApproach) {
+            // using a weighted approach, see overall()-method below for more information
+            Collections.sort(players);
+            for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
+                p = players.get(i);
 
-            winners.add(p.player);
-            System.out.println("\t" + i + " : "
-                    + p.matchesWonAgainstPlayer + " / "
-                    + p.matchesWonAgainstRandom + " / "
-                    + p.drawAgainstPlayer + " / "
-                    + p.drawAgainstRandom + " / "
-                    + p.matches + " / "
-                    + p.player.getTree().getTitle()
-            );
-        }*/
+                winners.add(p.player);
+                System.out.println("\t" + i + " : "
+                                + p.matchesWonAgainstPlayer + " / "
+                                + p.matchesWonAgainstRandom + " / "
+                                + p.drawAgainstPlayer + " / "
+                                + p.drawAgainstRandom + " / "
+                                + p.matches + " / "
+                                + p.player.getTree().getTitle() + "_" + p.player.getTree().getGeneticCount()
 
-        // using the max approach
-        Collections.sort(players, new Comparator<PlayerEnlist>() {
-            @Override
-            public int compare(PlayerEnlist o1, PlayerEnlist o2) {
-                return o1.matchesWonAgainstRandom - o2.matchesWonAgainstRandom;
+                );
             }
-        });
-        for (int i = 0; i < numberOfPlayersToReturn / 2 && i < players.size(); i++) {
-            p = players.get(0);
-            winners.add(p.player);
-            System.out.println("\t" + i + " : "
-                            + p.matchesWonAgainstPlayer + " / "
-                            + p.matchesWonAgainstRandom + " / "
-                            + p.drawAgainstPlayer + " / "
-                            + p.drawAgainstRandom + " / "
-                            + p.matches + " / "
-                            + p.player.getTree().getTitle()
-            );
-            players.remove(0);
-        }
+        } else {
 
-        Collections.sort(players, new Comparator<PlayerEnlist>() {
-            @Override
-            public int compare(PlayerEnlist o1, PlayerEnlist o2) {
-                return o1.matchesWonAgainstPlayer - o2.matchesWonAgainstPlayer;
+            // using the max approach
+
+            // Sort by random
+            Collections.sort(players, new Comparator<PlayerEnlist>() {
+                @Override
+                public int compare(PlayerEnlist o1, PlayerEnlist o2) {
+                    return o2.matchesWonAgainstRandom - o1.matchesWonAgainstRandom;
+                }
+            });
+            for (int i = 0; i < numberOfPlayersToReturn / 2 && i < players.size(); i++) {
+                p = players.get(0);
+                winners.add(p.player);
+                System.out.println("\t" + i + " : "
+                                + p.matchesWonAgainstPlayer + " / "
+                                + p.matchesWonAgainstRandom + " / "
+                                + p.drawAgainstPlayer + " / "
+                                + p.drawAgainstRandom + " / "
+                                + p.matches + " / "
+                                + p.player.getTree().getTitle() + "_" + p.player.getTree().getGeneticCount()
+                );
+                players.remove(0);
             }
-        });
 
-        for (int i = 0; i < numberOfPlayersToReturn / 2 && i < players.size(); i++) {
-            p = players.get(0);
-            winners.add(p.player);
-            System.out.println("\t" + i + " : "
-                            + p.matchesWonAgainstPlayer + " / "
-                            + p.matchesWonAgainstRandom + " / "
-                            + p.drawAgainstPlayer + " / "
-                            + p.drawAgainstRandom + " / "
-                            + p.matches + " / "
-                            + p.player.getTree().getTitle()
-            );
-            players.remove(0);
+            // Sort by player
+            Collections.sort(players, new Comparator<PlayerEnlist>() {
+                @Override
+                public int compare(PlayerEnlist o1, PlayerEnlist o2) {
+                    return o2.matchesWonAgainstPlayer - o1.matchesWonAgainstPlayer;
+                }
+            });
+
+            for (int i = 0; i < numberOfPlayersToReturn / 2 && i < players.size(); i++) {
+                p = players.get(0);
+                winners.add(p.player);
+                System.out.println("\t" + i + " : "
+                                + p.matchesWonAgainstPlayer + " / "
+                                + p.matchesWonAgainstRandom + " / "
+                                + p.drawAgainstPlayer + " / "
+                                + p.drawAgainstRandom + " / "
+                                + p.matches + " / "
+                                + p.player.getTree().getTitle() + "_" + p.player.getTree().getGeneticCount()
+                );
+                players.remove(0);
+            }
+
+            // Mostly for the last selection of the overall winner.
+            Collections.shuffle(winners, GPRandom.INSTANCE.getRand());
         }
 
         return winners;

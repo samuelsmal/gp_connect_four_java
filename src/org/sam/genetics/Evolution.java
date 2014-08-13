@@ -1,5 +1,6 @@
 package org.sam.genetics;
 
+import org.junit.Test;
 import org.sam.Tournament.Tournament;
 import org.sam.game.GPTreePlayer;
 import org.sam.tree.Tree;
@@ -20,6 +21,7 @@ public class Evolution {
     private int winAgainstGPPlayerWeight;
     private int drawWeight;
     private int numberOfPlayersToReturn;
+    private boolean maxApproach;
 
     public static class Builder {
         private int numberOfGenerations = 50;
@@ -30,6 +32,7 @@ public class Evolution {
         private int drawWeight = 1;
         private int depthOfTrees = 4;
         private boolean rampedHalfAndHalf = false;
+        private boolean maxApproach = false;
 
         public Builder () {}
 
@@ -63,22 +66,33 @@ public class Evolution {
             return this;
         }
 
+        public Builder drawWeight(int drawWeight) {
+            this.drawWeight = drawWeight;
+            return this;
+        }
+
         public Builder rampedHalfAndHalf(boolean rampedHalfAndHalf) {
             this.rampedHalfAndHalf = rampedHalfAndHalf;
             return this;
         }
 
+        public Builder maxApproach(boolean maxApproach) {
+            this.maxApproach = maxApproach;
+            return this;
+        }
+
         public Evolution build() {
-            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, rampedHalfAndHalf);
+            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, rampedHalfAndHalf, maxApproach);
         }
     }
 
-    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight, boolean rampedHalfAndHalf) {
+    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight, boolean rampedHalfAndHalf, boolean maxApproach) {
         this.numberOfGenerations = numberOfGenerations;
         this.mutationOn = mutationOn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
         this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
         this.drawWeight = drawWeight;
+        this.maxApproach = maxApproach;
 
         if (mutationOn) {
             numberOfPlayersToReturn = (int)Math.sqrt((double)numberOfPlayers);
@@ -87,7 +101,7 @@ public class Evolution {
         }
 
         System.out.println(
-                "Settings:"
+                "Evolution settings:"
                 + "\n\tnumberOfPlayers: " + numberOfPlayers
                 + "\n\tnumberOfGenerations: " + numberOfGenerations
                 + "\n\tdepthOfTrees: " + depthOfTrees
@@ -96,6 +110,7 @@ public class Evolution {
                 + "\n\twinAgainstGPPlayerWeight: " + winAgainstGPPlayerWeight
                 + "\n\tdrawWeight: " + drawWeight
                 + "\n\trampedHalfAndHalf: " + rampedHalfAndHalf
+                + "\n\tmaxApproach: " + maxApproach
         );
 
         players = new ArrayList<>(numberOfPlayers);
@@ -127,7 +142,7 @@ public class Evolution {
             System.out.println("\t" + players.get(0));
 
 
-            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight).runTournament();
+            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, maxApproach).runTournament();
             toTheNextGeneration();
 
             System.out.println("\tWinner count of nodes: " + players.get(0).getTree().flatten().size());

@@ -4,6 +4,7 @@ import org.sam.Tournament.Tournament;
 import org.sam.game.*;
 import org.sam.game.EvolvedPlayers.SunAug10_14_10_66;
 import org.sam.genetics.Evolution;
+import org.sam.tree.LeafFactory;
 
 import java.util.List;
 
@@ -20,7 +21,67 @@ public class Main {
     }
 
     private static void evol() {
-        Evolution evolution = new Evolution.Builder().build();
+        /*
+         *
+         *    ,--.
+         *   /   |
+         *   `|  |
+         *    |  |
+         *    `--'
+         *
+         * Setting the LeafFactory options.
+         * The default values are:
+         *
+         *        onlyConditional :   false
+         * noHigherLevelFunctions :   false
+         *
+         * This MUST be set before using the evolution class.
+         *     =====
+         *
+         * Comment out the lines below for altering the options.
+         */
+
+        LeafFactory.noHigherLevelFunctions = true;
+        LeafFactory.onlyConditional = true;
+
+        /*
+         *
+         *
+         *    ,---.
+         *   '.-.  \
+         *    .-' .'
+         *   /   '-.
+         *   '-----'
+         *
+         * Setting the evolution options, and building the object.
+         * The default values are:
+         *
+         *          numberOfGenerations : 50
+         *              numberOfPlayers : 200
+         * winAgainstRandomPlayerWeight : 2
+         *     winAgainstGPPlayerWeight : 2
+         *                   drawWeight : 1
+         *                 depthOfTrees : 4
+         *            rampedHalfAndHalf : false
+         *                  maxApproach : false
+         *                   mutationOn : false
+         *
+         *
+         * Comment out the lines below for altering the options.
+         * Bear in mind that using unreasonable values could break the program. (Like setting the population to zero.)
+         */
+        Evolution evolution = new Evolution.Builder()
+                //.numberOfGenerations(100)
+                //.numberOfPlayers(4000)
+                //.winAgainstGPPlayerWeight(4)
+                //.winAgainstRandomPlayerWeight(23)
+                //.drawWeight(8)
+                //.depthOfTrees(20)
+                //.rampedHalfAndHalf(true)
+                //.maxApproach(true)
+                //.mutationOn(true)
+                .build();
+
 
         GPTreePlayer winner = evolution.evolve();
 

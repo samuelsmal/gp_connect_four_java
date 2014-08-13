@@ -22,6 +22,7 @@ public class Tree {
 
         root = new Leaf(other.getRoot());
         title = other.getTitle();
+        geneticCount = other.getGeneticCount();
     }
 
     @Override
@@ -37,8 +38,16 @@ public class Tree {
         geneticCount++;
     }
 
+    public void setGeneticCount(int geneticCount) {
+        this.geneticCount = geneticCount;
+    }
+
+    public int getGeneticCount() {
+        return geneticCount;
+    }
+
     public String getTitle() {
-        return title + "_" + geneticCount;
+        return title;
     }
 
     public void setTitle(String title) {
