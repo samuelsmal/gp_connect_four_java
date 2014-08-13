@@ -8,7 +8,12 @@ import org.sam.tree.Leaf;
 import java.util.List;
 
 /**
- * Since this function is rather complicated, it has to be reproduced in the player.
+ *  Inserts stones into the game, and checks if the enemy can win in two rounds.
+ *
+ *  If : player can make it : Return -1
+ *  Else-If : enemy can make it : Return 1
+ *  Else : Return 0
+ *
  * Created by samuel on 11/08/14.
  */
 public class EnemyCanWinInOneRound implements INode {
@@ -22,9 +27,16 @@ public class EnemyCanWinInOneRound implements INode {
      */
     @Override
     public long evaluate(char playerColour, char enemyColour, Game game, List<Leaf> children) {
-        /*
-         * The Node gets a current possible (player) move, next move is therefore an enemy move.
-         */
+        // The method's outline is always the same:
+        // First test all possibilities of current turn, then go deeper: Breadth-first.
+
+        // The players turn has already happened.
+        // Ergo the first turn is the enemy's.
+
+        if (game.checkBoard() == playerColour) {
+            return -1;
+        }
+
         Game copy = new Game();
 
         for (int i = 0; i < Game.BOARD_WIDTH; i++) {
@@ -32,12 +44,12 @@ public class EnemyCanWinInOneRound implements INode {
                 copy.setBoard(game.getBoardCopy());
 
                 try {
-                    copy.insertStoneInColumn(i, enemyColour);
+                    copy.checkMove(copy.insertStoneInColumn(i, enemyColour));
                 } catch (ColumnFullException e) {
                     e.printStackTrace();
                 }
 
-                if (copy.colourOfWinner() == enemyColour) {
+                if (copy.getWinnerColour() == enemyColour) {
                     return 1;
                 }
             }

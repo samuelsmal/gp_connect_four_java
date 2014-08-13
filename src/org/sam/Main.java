@@ -41,17 +41,17 @@ public class Main {
         for (int i = 0; i < rounds; i++) {
             game.startGame(winner, randomPlayer);
 
-            if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
+            if (game.getWinnerColour() == Game.FIRST_PLAYER_COLOUR) {
                 evolveWonFirst++;
-            } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
+            } else if (game.getWinnerColour() == Game.EMPTY_STONE_COLOUR) {
                 drawFirst++;
             }
 
             game.startGame(randomPlayer, winner);
 
-            if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
+            if (game.getWinnerColour() == Game.SECOND_PLAYER_COLOUR) {
                 evolveWonSecond++;
-            } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
+            } else if (game.getWinnerColour() == Game.EMPTY_STONE_COLOUR) {
                 drawSecond++;
             }
         }

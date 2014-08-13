@@ -120,17 +120,17 @@ public class Tournament {
             for (int j = 0; j < groupSize; j++) {
                 game.startGame(player.player, randomPlayer);
                 player.newMatch();
-                if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
+                if (game.getWinnerColour() == Game.FIRST_PLAYER_COLOUR) {
                     player.newRandomMatchWon();
-                } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
+                } else if (game.getWinnerColour() == Game.EMPTY_STONE_COLOUR) {
                     player.newRandomMatchDraw();
                 }
 
                 game.startGame(randomPlayer, player.player);
                 player.newMatch();
-                if (game.colourOfWinner() == Game.SECOND_PLAYER_COLOUR) {
+                if (game.getWinnerColour() == Game.SECOND_PLAYER_COLOUR) {
                     player.newRandomMatchWon();
-                } else if (game.colourOfWinner() == Game.EMPTY_STONE_COLOUR) {
+                } else if (game.getWinnerColour() == Game.EMPTY_STONE_COLOUR) {
                     player.newRandomMatchDraw();
                 }
             }
@@ -180,9 +180,9 @@ public class Tournament {
                     game.startGame(p1.player, p2.player);
 
                     // A draw is still possible
-                    if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
+                    if (Game.FIRST_PLAYER_COLOUR == game.getWinnerColour()) {
                         p1.newPlayerMatchWon();
-                    } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
+                    } else if (Game.SECOND_PLAYER_COLOUR == game.getWinnerColour()) {
                         p2.newPlayerMatchWon();
                     } else {
                         p1.newPlayerMatchDraw();

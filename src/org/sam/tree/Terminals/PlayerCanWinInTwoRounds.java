@@ -8,6 +8,12 @@ import org.sam.tree.Leaf;
 import java.util.List;
 
 /**
+ * Inserts stones into the game, and checks if the player can win in two rounds (including the current one).
+ *
+ * If : player can make it : Return 1.
+ * Else-If : enemy can make it in his turn : Return -1.
+ * Else : Return 0.
+ *
  * Created by samuel on 11/08/14.
  */
 public class PlayerCanWinInTwoRounds implements INode {
@@ -18,7 +24,10 @@ public class PlayerCanWinInTwoRounds implements INode {
 
     @Override
     public long evaluate(char playerColour, char enemyColour, Game game, List<Leaf> children) {
-        if (game.colourOfWinner() == playerColour) {
+        // The method's outline is always the same:
+        // First test all possibilities of current turn, then go deeper: Breadth-first.
+
+        if (game.checkBoard() == playerColour) {
             return 1;
         }
 
@@ -31,12 +40,12 @@ public class PlayerCanWinInTwoRounds implements INode {
                 copy.setBoard(game.getBoardCopy());
 
                 try {
-                    copy.insertStoneInColumn(i, enemyColour);
+                    copy.checkMove(copy.insertStoneInColumn(i, enemyColour));
                 } catch (ColumnFullException e) {
                     e.printStackTrace();
                 }
 
-                if (copy.colourOfWinner() == enemyColour) {
+                if (copy.getWinnerColour() == enemyColour) {
                     return -1;
                 }
             }
@@ -58,12 +67,12 @@ public class PlayerCanWinInTwoRounds implements INode {
                         innerCopy.setBoard(copy.getBoardCopy());
 
                         try {
-                            innerCopy.insertStoneInColumn(j, playerColour);
+                            innerCopy.checkMove(innerCopy.insertStoneInColumn(j, playerColour));
                         } catch (ColumnFullException e) {
                             e.printStackTrace();
                         }
 
-                        if (innerCopy.colourOfWinner() == playerColour) {
+                        if (innerCopy.getWinnerColour() == playerColour) {
                             return 1;
                         }
                     }

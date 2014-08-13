@@ -55,7 +55,7 @@ public abstract class GPPlayer implements Player {
                     e.printStackTrace();
                 }
 
-                if (game.colourOfWinner() == enemyColour) {
+                if (game.getWinnerColour() == enemyColour) {
                     return 1;
                 }
             }

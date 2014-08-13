@@ -44,20 +44,7 @@ public class GameTest {
 
     @Test
     public void testColourOfWinner() throws Exception {
-        assertFalse(game.hasWinner());
-        assertEquals(game.colourOfWinner(), Game.EMPTY_STONE_COLOUR);
-
-        game = new Game(new char[][]{
-            {'x', 'x', 'x', 'x', '_', '_', '_'},
-            {'_', '_', '_', '_', '_', '_', '_'},
-            {'_', '_', '_', '_', '_', '_', '_'},
-            {'_', '_', '_', '_', '_', '_', '_'},
-            {'_', '_', '_', '_', '_', '_', '_'},
-            {'_', '_', '_', '_', '_', '_', 'o'}
-        });
-
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'x');
+        assertEquals(game.getWinnerColour(), Game.EMPTY_STONE_COLOUR);
 
         game = new Game(new char[][]{
             {'x', '_', '_', '_', '_', '_', '_'},
@@ -65,88 +52,43 @@ public class GameTest {
             {'_', '_', '_', '_', '_', '_', '_'},
             {'_', '_', '_', '_', '_', '_', '_'},
             {'_', '_', '_', '_', '_', '_', '_'},
-            {'_', '_', '_', 'o', 'o', 'o', 'o'}
+            {'_', '_', '_', '_', 'x', 'x', 'x'}
         });
 
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'o');
+        game.setRunning(true);
+        game.checkMove(game.insertStoneInColumn(3, 'x'));
+
+        assertFalse(game.getRunning());
 
         game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', 'x', 'o', 'o', 'o'}
-        });
-
-        game.hasWinner();
-
-        assertFalse(game.hasWinner());
-        assertEquals(game.colourOfWinner(), '_');
-
-        game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', 'x', '_', '_', '_'},
                 {'_', '_', '_', 'x', '_', '_', '_'},
                 {'_', '_', '_', 'x', '_', '_', '_'},
                 {'_', '_', '_', 'x', 'o', 'o', 'o'}
         });
 
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'x');
+        game.setRunning(true);
+
+        game.checkMove(game.insertStoneInColumn(3, 'x'));
+
+        assertFalse(game.getRunning());
 
         game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', 'o', '_', '_', '_'},
-                {'_', '_', '_', 'x', 'o', '_', '_'},
-                {'_', '_', '_', 'x', '_', 'o', '_'},
-                {'_', '_', '_', 'x', 'o', 'o', 'o'}
-        });
-
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'o');
-
-        game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', 'x', '_', '_', '_'},
-                {'_', '_', 'x', 'o', '_', '_', '_'},
-                {'_', 'x', '_', 'x', '_', '_', '_'},
-                {'x', '_', '_', 'x', 'o', 'o', 'o'}
-        });
-
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'x');
-
-        game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', 'x', '_', '_', '_'},
                 {'_', '_', 'x', 'o', '_', '_', '_'},
                 {'_', 'x', 'o', 'x', '_', '_', '_'},
                 {'x', 'o', '_', 'x', 'o', 'o', 'o'}
         });
-
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'x');
+        game.setRunning(true);
+        game.checkMove(game.insertStoneInColumn(3, 'x'));
+        assertFalse(game.getRunning());
 
         game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
-                {'_', '_', '_', 'x', '_', '_', '_'},
-                {'_', '_', 'x', 'o', '_', '_', '_'},
-                {'_', 'x', 'o', 'x', '_', '_', '_'},
-                {'x', 'o', 'o', 'x', 'o', 'o', 'o'}
-        });
-
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'x');
-
-        game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', 'x', '_', '_', '_'},
                 {'_', '_', '_', 'o', '_', '_', '_'},
@@ -154,34 +96,21 @@ public class GameTest {
                 {'x', 'o', 'o', '_', 'o', 'o', 'o'}
         });
 
-        assertFalse(game.hasWinner());
-        assertEquals(game.colourOfWinner(), '_');
+        game.setRunning(true);
+        game.checkMove(game.insertStoneInColumn(2, 'x'));
+        assertFalse(game.getRunning());
 
         game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
-                {'o', '_', '_', '_', '_', '_', '_'},
-                {'o', '_', '_', 'x', '_', '_', '_'},
-                {'o', '_', '_', 'o', '_', '_', '_'},
-                {'o', 'x', 'o', 'x', '_', '_', '_'},
-                {'x', 'o', 'o', '_', 'o', 'o', 'o'}
-        });
-
-        assertTrue(game.hasWinner());
-        assertEquals(game.colourOfWinner(), 'o');
-    }
-
-    @Test
-    public void testEnded() {
-        game = new Game(new char[][]{
-                {'x', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', '_', '_', '_', '_'},
                 {'_', '_', '_', 'x', '_', '_', '_'},
-                {'_', '_', 'x', 'o', '_', '_', '_'},
-                {'_', 'x', '_', 'x', '_', '_', '_'},
-                {'x', '_', '_', 'x', 'o', 'o', 'o'}
+                {'_', '_', '_', 'o', '_', '_', '_'},
+                {'_', '_', 'o', 'x', '_', '_', '_'},
+                {'_', '_', 'o', '_', 'o', 'o', 'o'}
         });
 
-        assertTrue(game.hasWinner());
-        assertTrue(game.hasEnded());
+        game.setRunning(true);
+        game.checkMove(game.insertStoneInColumn(1, 'o'));
+        assertFalse(game.getRunning());
     }
 }

@@ -12,6 +12,9 @@ public class Game {
     public static final char SECOND_PLAYER_COLOUR = 'o';
     public static final char EMPTY_STONE_COLOUR = '_';
 
+    private boolean isRunning;
+    private char winnerColour;
+
     private char[][] board;
 
     public Game() {
@@ -59,28 +62,91 @@ public class Game {
                 {'_', '_', '_', '_', '_', '_', '_'}
         };
 
+        isRunning = true;
+
         boolean firstPlayersTurn = true;
 
-        while (!hasEnded()) {
+        winnerColour = EMPTY_STONE_COLOUR;
+
+        while (isRunning) {
             if (firstPlayersTurn) {
                 try {
-                    insertStoneInColumn(firstPlayer.play(this, FIRST_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), FIRST_PLAYER_COLOUR);
+                    checkMove(insertStoneInColumn(firstPlayer.play(this, FIRST_PLAYER_COLOUR, SECOND_PLAYER_COLOUR), FIRST_PLAYER_COLOUR));
+                    winnerColour = FIRST_PLAYER_COLOUR;
                     firstPlayersTurn = false;
                 } catch (ColumnFullException e) {
                     System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
                 }
             } else {
                 try {
-                    insertStoneInColumn(secondPlayer.play(this, SECOND_PLAYER_COLOUR, FIRST_PLAYER_COLOUR), SECOND_PLAYER_COLOUR);
+                    checkMove(insertStoneInColumn(secondPlayer.play(this, SECOND_PLAYER_COLOUR, FIRST_PLAYER_COLOUR), SECOND_PLAYER_COLOUR));
                     firstPlayersTurn = true;
+                    winnerColour = SECOND_PLAYER_COLOUR;
                 } catch (ColumnFullException e) {
                     System.out.println("Column already full! Or wrong number. Choose another one. " + e.getMessage());
                 }
             }
         }
 
-        return colourOfWinner();
+        return winnerColour;
     }
+
+    /**
+     * @pre The game is in a correct state.
+     * @param point
+     * @return colour of winner, EMPTY_STONE_COLOUR ("_") otherwise.
+     */
+    public char checkMove(Point point) {
+        char currentStoneColour;
+
+        currentStoneColour = checkEast(point.x, point.y);
+        if (currentStoneColour != EMPTY_STONE_COLOUR) {
+            isRunning = false;
+            winnerColour = currentStoneColour;
+        }
+
+        currentStoneColour = checkEastSouth(point.x, point.y);
+        if (currentStoneColour != EMPTY_STONE_COLOUR) {
+            isRunning = false;
+            winnerColour = currentStoneColour;
+        }
+
+        currentStoneColour = checkSouth(point.x, point.y);
+        if (currentStoneColour != EMPTY_STONE_COLOUR) {
+            isRunning = false;
+            winnerColour = currentStoneColour;
+        }
+
+        currentStoneColour = checkWest(point.x, point.y);
+        if (currentStoneColour != EMPTY_STONE_COLOUR) {
+            isRunning = false;
+            winnerColour = currentStoneColour;
+        }
+
+        currentStoneColour = checkWestSouth(point.x, point.y);
+        if (currentStoneColour != EMPTY_STONE_COLOUR) {
+            isRunning = false;
+            winnerColour = currentStoneColour;
+        }
+
+        return winnerColour;
+    }
+
+    public char checkBoard() {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_HEIGHT; j++) {
+                checkMove(new Point(i, j));
+            }
+        }
+
+        return winnerColour;
+    }
+
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+    public boolean getRunning() { return isRunning; }
+
 
     /**
      * Returns colour of stone at the given coordinates.
@@ -96,7 +162,7 @@ public class Game {
         return board[y][x];
     }
 
-    public void insertStoneInColumn(int col, char colour) throws ColumnFullException {
+    public Point insertStoneInColumn(int col, char colour) throws ColumnFullException {
         if (col < 0 || col > BOARD_WIDTH - 1) {
             throw new ColumnFullException();
         }
@@ -104,7 +170,7 @@ public class Game {
         for (int i = BOARD_HEIGHT - 1; i >= 0; i--) {
             if (board[i][col] == EMPTY_STONE_COLOUR) {
                 board[i][col] = colour;
-                return ;
+                return new Point(col, i);
             }
         }
 
@@ -133,56 +199,15 @@ public class Game {
     }
 
     public boolean hasEnded() {
-        if (hasWinner()) {
-            return true;
-        }
-
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            if (getColourOfStone(i, 0) == EMPTY_STONE_COLOUR) {
-                return false;
-            }
-        }
-
-        return true;
+        return !isRunning;
     }
 
-    public boolean hasWinner() {
-        return colourOfWinner() != EMPTY_STONE_COLOUR;
-    }
-
-    public char colourOfWinner() {
-        char currentStoneColour;
-
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            for (int j = 0; j < BOARD_HEIGHT; j++) {
-                currentStoneColour = checkEast(i, j);
-                if (currentStoneColour != EMPTY_STONE_COLOUR) {
-                    return currentStoneColour;
-                }
-
-                currentStoneColour = checkEastSouth(i, j);
-                if (currentStoneColour != EMPTY_STONE_COLOUR) {
-                    return currentStoneColour;
-                }
-
-                currentStoneColour = checkSouth(i, j);
-                if (currentStoneColour != EMPTY_STONE_COLOUR) {
-                    return currentStoneColour;
-                }
-
-                currentStoneColour = checkWest(i, j);
-                if (currentStoneColour != EMPTY_STONE_COLOUR) {
-                    return currentStoneColour;
-                }
-
-                currentStoneColour = checkWestSouth(i, j);
-                if (currentStoneColour != EMPTY_STONE_COLOUR) {
-                    return currentStoneColour;
-                }
-            }
+    public char getWinnerColour() {
+        if (isRunning) {
+            return EMPTY_STONE_COLOUR;
         }
 
-        return EMPTY_STONE_COLOUR;
+        return winnerColour;
     }
 
     private char checkEast(int x, int y) { return checkVector(x, y, 1, 0); }
@@ -190,6 +215,9 @@ public class Game {
     private char checkSouth(int x, int y) { return checkVector(x, y, 0, 1); }
     private char checkWestSouth(int x, int y) { return  checkVector(x, y, -1, 1); }
     private char checkWest(int x, int y) { return checkVector(x, y, -1, 0); }
+    private char checkNorthWest(int x, int y) { return checkVector(x, y, -1, -1); }
+    private char checkNorthEast(int x, int y) { return  checkVector(x, y, 1, -1); }
+
 
     private char checkVector(int x, int y, int dx, int dy) {
         char stoneColourToCheckAgainst = getColourOfStone(x, y);
@@ -260,5 +288,14 @@ public class Game {
 
     public void setBoard(char[][] board) {
         this.board = board;
+    }
+
+    public class Point {
+        public int x;
+        public int y;
+
+        Point(int x, int y) {
+            this.x = x; this.y = y;
+        }
     }
 }
