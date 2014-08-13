@@ -5,10 +5,7 @@ import org.sam.game.GPTreePlayer;
 import org.sam.game.Game;
 import org.sam.game.RandomPlayer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -60,15 +57,14 @@ public class Tournament {
             e.printStackTrace();
         }
 
-
-        Collections.sort(players);
-
         List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
-
-        // look out here...
         System.out.println("\nThe best evolved players: (wins EP / wins RP / draws EP / draws RP / matches / treetitle)");
+        PlayerEnlist p;
+
+        // using a weighted approach, see overall()-method below for more information
+        /*Collections.sort(players);
         for (int i = 0; i < numberOfPlayersToReturn && i < players.size(); i++) {
-            PlayerEnlist p = players.get(i);
+            p = players.get(i);
 
             winners.add(p.player);
             System.out.println("\t" + i + " : "
@@ -79,6 +75,48 @@ public class Tournament {
                     + p.matches + " / "
                     + p.player.getTree().getTitle()
             );
+        }*/
+
+        // using the max approach
+        Collections.sort(players, new Comparator<PlayerEnlist>() {
+            @Override
+            public int compare(PlayerEnlist o1, PlayerEnlist o2) {
+                return o1.matchesWonAgainstRandom - o2.matchesWonAgainstRandom;
+            }
+        });
+        for (int i = 0; i < numberOfPlayersToReturn / 2 && i < players.size(); i++) {
+            p = players.get(0);
+            winners.add(p.player);
+            System.out.println("\t" + i + " : "
+                            + p.matchesWonAgainstPlayer + " / "
+                            + p.matchesWonAgainstRandom + " / "
+                            + p.drawAgainstPlayer + " / "
+                            + p.drawAgainstRandom + " / "
+                            + p.matches + " / "
+                            + p.player.getTree().getTitle()
+            );
+            players.remove(0);
+        }
+
+        Collections.sort(players, new Comparator<PlayerEnlist>() {
+            @Override
+            public int compare(PlayerEnlist o1, PlayerEnlist o2) {
+                return o1.matchesWonAgainstPlayer - o2.matchesWonAgainstPlayer;
+            }
+        });
+
+        for (int i = 0; i < numberOfPlayersToReturn / 2 && i < players.size(); i++) {
+            p = players.get(0);
+            winners.add(p.player);
+            System.out.println("\t" + i + " : "
+                            + p.matchesWonAgainstPlayer + " / "
+                            + p.matchesWonAgainstRandom + " / "
+                            + p.drawAgainstPlayer + " / "
+                            + p.drawAgainstRandom + " / "
+                            + p.matches + " / "
+                            + p.player.getTree().getTitle()
+            );
+            players.remove(0);
         }
 
         return winners;
@@ -242,6 +280,8 @@ public class Tournament {
 
 
         public int overall() {
+            if (matches == 0) matches = 1;
+
             return (matchesWonAgainstRandom * winAgainstRandomPlayerWeight + matchesWonAgainstPlayer * winAgainstGPPlayerWeight + drawWeight * (drawAgainstRandom + drawAgainstPlayer)) / matches;
         }
 

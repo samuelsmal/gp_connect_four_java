@@ -1,6 +1,10 @@
 package org.sam.game;
 
 import org.sam.Random.GPRandom;
+import org.sam.tree.Terminals.EnemyCanWinInOneRound;
+import org.sam.tree.Terminals.EnemyCanWinInTwoRounds;
+import org.sam.tree.Terminals.PlayerCanWinInOneRound;
+import org.sam.tree.Terminals.PlayerCanWinInTwoRounds;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,28 +46,21 @@ public abstract class GPPlayer implements Player {
         return decisions.get(decisions.size() - 1).column;
     }
 
-    protected long enemyCanWinInOneRound(char enemyColour, Game game) {
-        Game copy = new Game();
-
-        for (int i = 0; i < Game.BOARD_WIDTH; i++) {
-            if (game.getColourOfStone(i, 0) == Game.EMPTY_STONE_COLOUR) {
-                copy.setBoard(game.getBoardCopy());
-
-                try {
-                    copy.insertStoneInColumn(i, enemyColour);
-                } catch (ColumnFullException e) {
-                    e.printStackTrace();
-                }
-
-                if (game.colourOfWinner() == enemyColour) {
-                    return 1;
-                }
-            }
-        }
-
-        return 0;
+    protected long enemyCanWinInOneRound(char playerColour, char enemyColour, Game game) {
+        return new EnemyCanWinInOneRound().evaluate(playerColour, enemyColour, game, null);
     }
 
+    protected long playerCanWinInOneRound(char playerColour, char enemyColour, Game game) {
+        return new PlayerCanWinInOneRound().evaluate(playerColour, enemyColour, game, null);
+    }
+
+    protected long enemyCanWinInTwoRounds(char playerColour, char enemyColour, Game game) {
+        return new EnemyCanWinInTwoRounds().evaluate(playerColour, enemyColour, game, null);
+    }
+
+    protected long playerCanWinInTwoRounds(char playerColour, char enemyColour, Game game) {
+        return new PlayerCanWinInTwoRounds().evaluate(playerColour, enemyColour, game, null);
+    }
 
     protected abstract long evalGame(char playerColour, char enemyColour, Game game);
 

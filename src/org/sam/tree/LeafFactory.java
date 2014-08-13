@@ -15,7 +15,7 @@ public class LeafFactory {
     private static final GPRandom rand = GPRandom.INSTANCE;
 
     public static Leaf randomFullLeaf() {
-        return randomFullLeaf(0);
+        return randomFullLeaf(2);
     }
 
     public static Leaf randomFullLeaf(long depth) {
@@ -85,26 +85,30 @@ public class LeafFactory {
                 leaf.setElement(new MultiplicationOperationNode());
             } /*else if (functionRandomNumber <= 3) {
                 leaf.setElement(new SaveDivisionOperationNode());
-            }*/ else {
+            } */else {
                 // Ternary element
                 leaf.setElement(new ConditionalNode());
                 leaf.addChild(randomHalfLeaf(rand.nextInt((int) maxDepth - 1)));
             }
         } else {
             // Terminals
-            int terminalRandomNumber = rand.nextInt(3); // 0 <= rand < n
+            int terminalRandomNumber = rand.nextInt(8); // 0 <= rand < n
 
             if (terminalRandomNumber <= 0) {
                 leaf.setElement(new ConstantNode((long)rand.nextInt(9) - 5)); // Random settings...
             } else if (terminalRandomNumber <= 1) {
                 leaf.setElement(new EnemyStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
-            } else /*if (terminalRandomNumber <= 2)*/{
+            } else if (terminalRandomNumber <= 2) {
                 leaf.setElement(new PlayerStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
-            }/* else if (terminalRandomNumber <= 4) {
+            } else if (terminalRandomNumber <= 4) {
                 leaf.setElement(new EnemyCanWinInOneRound());
-            } else {
+            } else if (terminalRandomNumber <= 5) {
                 leaf.setElement(new PlayerCanWinInOneRound());
-            }*/
+            } else if (terminalRandomNumber <= 6) {
+                leaf.setElement(new EnemyCanWinInTwoRounds());
+            } else {
+                leaf.setElement(new PlayerCanWinInTwoRounds());
+            }
         }
 
         return leaf;

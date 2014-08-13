@@ -29,6 +29,7 @@ public class Evolution {
         private int winAgainstGPPlayerWeight = 2;
         private int drawWeight = 1;
         private int depthOfTrees = 4;
+        private boolean rampedHalfAndHalf = false;
 
         public Builder () {}
 
@@ -62,12 +63,17 @@ public class Evolution {
             return this;
         }
 
+        public Builder rampedHalfAndHalf(boolean rampedHalfAndHalf) {
+            this.rampedHalfAndHalf = rampedHalfAndHalf;
+            return this;
+        }
+
         public Evolution build() {
-            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight);
+            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, rampedHalfAndHalf);
         }
     }
 
-    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight) {
+    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight, boolean rampedHalfAndHalf) {
         this.numberOfGenerations = numberOfGenerations;
         this.mutationOn = mutationOn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
@@ -89,16 +95,29 @@ public class Evolution {
                 + "\n\twinAgainstRandomPlayerWeight: " + winAgainstRandomPlayerWeight
                 + "\n\twinAgainstGPPlayerWeight: " + winAgainstGPPlayerWeight
                 + "\n\tdrawWeight: " + drawWeight
+                + "\n\trampedHalfAndHalf: " + rampedHalfAndHalf
         );
 
         players = new ArrayList<>(numberOfPlayers);
 
-        for (int i = 0; i < numberOfPlayers; i++) {
-            Tree tree = TreeFactory.fullTree(depthOfTrees);
-            tree.setTitle(Integer.toString(i));
+        if (rampedHalfAndHalf) {
+            for (int i = 0; i < numberOfPlayers / 2; i++) {
+                Tree fullTree = TreeFactory.fullTree(depthOfTrees);
+                fullTree.setTitle("FT" + i);
 
-            players.add(new GPTreePlayer(tree));
-            //players.add(new GPTreePlayer(TreeFactory.halfTree(depthOfTrees))); // TODO make this an option
+                Tree halfTree = TreeFactory.halfTree(depthOfTrees);
+                halfTree.setTitle("HT" + i);
+
+                players.add(new GPTreePlayer(fullTree));
+                players.add(new GPTreePlayer(halfTree));
+            }
+        } else {
+            for (int i = 0; i < numberOfPlayers; i++) {
+                Tree tree = TreeFactory.fullTree(depthOfTrees);
+                tree.setTitle(Integer.toString(i));
+
+                players.add(new GPTreePlayer(tree));
+            }
         }
     }
 

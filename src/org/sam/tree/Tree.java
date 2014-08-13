@@ -12,6 +12,7 @@ public class Tree {
     private Leaf root;
 
     private String title;
+    private int geneticCount = 0;
 
     public Tree() {}
 
@@ -32,8 +33,12 @@ public class Tree {
         return root.evaluate(playerColour, enemyColour, game);
     }
 
+    public void increaseGeneticCount() {
+        geneticCount++;
+    }
+
     public String getTitle() {
-        return title;
+        return title + "_" + geneticCount;
     }
 
     public void setTitle(String title) {
