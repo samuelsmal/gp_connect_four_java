@@ -14,7 +14,7 @@ public class Main {
         evol();
     }
 
-    private static void myself() {
+    private static void play() {
         Game game = new Game();
 
         game.startGame(new SunAug10_14_10_66(), new HumanPlayer());
@@ -41,8 +41,8 @@ public class Main {
          * Comment out the lines below for altering the options.
          */
 
-        LeafFactory.noHigherLevelFunctions = true;
-        LeafFactory.onlyConditional = true;
+        //LeafFactory.noHigherLevelFunctions = true;
+        //LeafFactory.onlyConditional = true;
 
         /*
          *
@@ -71,13 +71,13 @@ public class Main {
          * Bear in mind that using unreasonable values could break the program. (Like setting the population to zero.)
          */
         Evolution evolution = new Evolution.Builder()
-                //.numberOfGenerations(100)
-                //.numberOfPlayers(4000)
+                .numberOfGenerations(100)
+                .numberOfPlayers(240)
                 //.winAgainstGPPlayerWeight(4)
                 //.winAgainstRandomPlayerWeight(23)
                 //.drawWeight(8)
                 //.depthOfTrees(20)
-                //.rampedHalfAndHalf(true)
+                .rampedHalfAndHalf(true)
                 //.maxApproach(true)
                 //.mutationOn(true)
                 .build();

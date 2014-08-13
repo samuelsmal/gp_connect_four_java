@@ -38,10 +38,6 @@ public class Tree {
         geneticCount++;
     }
 
-    public void setGeneticCount(int geneticCount) {
-        this.geneticCount = geneticCount;
-    }
-
     public int getGeneticCount() {
         return geneticCount;
     }
