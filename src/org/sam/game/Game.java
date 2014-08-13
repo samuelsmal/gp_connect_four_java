@@ -129,13 +129,46 @@ public class Game {
             winnerColour = currentStoneColour;
         }
 
+        currentStoneColour = checkNorthEast(point.x, point.y);
+        
+
         return winnerColour;
     }
 
     public char checkBoard() {
+        char currentStoneColour;
+
         for (int i = 0; i < BOARD_WIDTH; i++) {
             for (int j = 0; j < BOARD_HEIGHT; j++) {
-                checkMove(new Point(i, j));
+                currentStoneColour = checkEast(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    isRunning = false;
+                    winnerColour = currentStoneColour;
+                }
+
+                currentStoneColour = checkEastSouth(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    isRunning = false;
+                    winnerColour = currentStoneColour;
+                }
+
+                currentStoneColour = checkSouth(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    isRunning = false;
+                    winnerColour = currentStoneColour;
+                }
+
+                currentStoneColour = checkWest(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    isRunning = false;
+                    winnerColour = currentStoneColour;
+                }
+
+                currentStoneColour = checkWestSouth(i, j);
+                if (currentStoneColour != EMPTY_STONE_COLOUR) {
+                    isRunning = false;
+                    winnerColour = currentStoneColour;
+                }
             }
         }
 
