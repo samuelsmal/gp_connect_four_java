@@ -22,13 +22,13 @@ public class Evolution {
     private int numberOfPlayersToReturn;
 
     public static class Builder {
-        private int numberOfGenerations = 100;
-        private int numberOfPlayers = 500;
+        private int numberOfGenerations = 50;
+        private int numberOfPlayers = 200;
         private boolean mutationOn = false;
         private int winAgainstRandomPlayerWeight = 2;
         private int winAgainstGPPlayerWeight = 2;
         private int drawWeight = 1;
-        private int depthOfTrees = 8;
+        private int depthOfTrees = 4;
 
         public Builder () {}
 

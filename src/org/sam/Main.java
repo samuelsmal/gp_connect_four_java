@@ -20,12 +20,7 @@ public class Main {
     }
 
     private static void evol() {
-        Evolution evolution = new Evolution.Builder()
-                .numberOfPlayers(200)
-                .numberOfGenerations(50)
-                .depthOfTrees(4)
-                .winAgainstRandomPlayerWeight(2)
-                .build();
+        Evolution evolution = new Evolution.Builder().build();
 
         GPTreePlayer winner = evolution.evolve();
 

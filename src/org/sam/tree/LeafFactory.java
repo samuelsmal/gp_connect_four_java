@@ -92,19 +92,19 @@ public class LeafFactory {
             }
         } else {
             // Terminals
-            int terminalRandomNumber = rand.nextInt(7); // 0 <= rand < n
+            int terminalRandomNumber = rand.nextInt(3); // 0 <= rand < n
 
             if (terminalRandomNumber <= 0) {
                 leaf.setElement(new ConstantNode((long)rand.nextInt(9) - 5)); // Random settings...
             } else if (terminalRandomNumber <= 1) {
                 leaf.setElement(new EnemyStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
-            } else if (terminalRandomNumber <= 2){
+            } else /*if (terminalRandomNumber <= 2)*/{
                 leaf.setElement(new PlayerStoneAtNode(rand.nextInt(7), rand.nextInt(6)));
-            } else if (terminalRandomNumber <= 4) {
+            }/* else if (terminalRandomNumber <= 4) {
                 leaf.setElement(new EnemyCanWinInOneRound());
             } else {
                 leaf.setElement(new PlayerCanWinInOneRound());
-            }
+            }*/
         }
 
         return leaf;
