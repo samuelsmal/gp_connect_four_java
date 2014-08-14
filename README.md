@@ -1,4 +1,4 @@
-# Generic programming a CONNECT FOUR playing AI
+# Using Generic Programming to evolve a CONNECT FOUR playing AI
 
 ## Requirements
 
