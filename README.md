@@ -64,3 +64,5 @@ If you want to extract the number of nodes use:
     grep 'Winner count of nodes' mi_01_only_ternary.txt > mi_01_only_ternary_node_count.txt
     
 And some replacement tool of your own.
+
+You can use my [Gist](https://gist.github.com/samuelsmal/26ed285beb8f96879f41) to plot the data, it's written in [R](http://www.r-project.org/).
