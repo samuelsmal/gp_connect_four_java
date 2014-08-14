@@ -48,3 +48,19 @@ Can take a long while with the right/wrong options.
     protected long evalGame(char playerColour, char enemyColour, Game game) {
       // PAST CODE FROM PROGRAMM HERE
     }
+
+## Using the data
+
+You can extract the data using `grep`:
+
+    grep '^[0-9]' mi_01_only_ternary.txt > mi_01_only_ternary_points.txt
+    
+This will extract all the datapoints. If you want to extract only the winner use
+
+    grep '^0' mi_01_only_ternary.txt > mi_01_only_ternary_only_winner.txt
+    
+If you want to extract the number of nodes use:
+
+    grep 'Winner count of nodes' mi_01_only_ternary.txt > mi_01_only_ternary_node_count.txt
+    
+And some replacement tool of your own.
