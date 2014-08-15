@@ -30,12 +30,35 @@ public class Game {
     }
 
     /**
+     * Copy constructor
+     * @param other
+     */
+    public Game(Game other) {
+        board = new char[BOARD_HEIGHT][BOARD_WIDTH];
+
+        for (int i = 0; i < BOARD_HEIGHT; i++) {
+            for (int j = 0; j < BOARD_WIDTH; j++) {
+                board[i][j] = other.board[i][j];
+            }
+        }
+    }
+
+    /**
      *
      * @param firstPlayer
      * @param secondPlayer
      * @return colour of winner 'x' for first, 'o' for second, '_' for a draw
      */
     public char startGame(Player firstPlayer, Player secondPlayer) {
+        board = new char[][]{
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'},
+                {'_', '_', '_', '_', '_', '_', '_'}
+        };
+
         boolean firstPlayersTurn = true;
 
         while (!hasEnded()) {

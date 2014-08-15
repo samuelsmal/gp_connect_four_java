@@ -11,12 +11,18 @@ import java.util.List;
 public class Tree {
     private Leaf root;
 
+    private String title;
+    private int geneticCount = 0;
+
     public Tree() {}
 
     public Tree(Leaf root) { this.root = root; }
 
     public Tree(Tree other) {
+
         root = new Leaf(other.getRoot());
+        title = other.getTitle();
+        geneticCount = other.getGeneticCount();
     }
 
     @Override
@@ -26,6 +32,22 @@ public class Tree {
 
     public long evaluate(char playerColour, char enemyColour, Game game) {
         return root.evaluate(playerColour, enemyColour, game);
+    }
+
+    public void increaseGeneticCount() {
+        geneticCount++;
+    }
+
+    public int getGeneticCount() {
+        return geneticCount;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Leaf getRoot() {

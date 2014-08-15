@@ -47,6 +47,12 @@ public class Genetics {
 
         lLeaf.setElement(tmpLeaf.getElement());
         lLeaf.setChildren(tmpLeaf.getChildren());
+
+        //lhs.setTitle("(c " + lhs.getTitle() + " " + rhs.getTitle() + ")");
+        //rhs.setTitle("(c " + rhs.getTitle() + " " + lhs.getTitle() + ")");
+
+        lhs.increaseGeneticCount();
+        rhs.increaseGeneticCount();
     }
 
     /**
@@ -55,13 +61,16 @@ public class Genetics {
      * @param tree
      */
     public static void mutate(Tree tree) {
+        tree.increaseGeneticCount();
         List<Leaf> treeFlattened = tree.flatten();
 
         Leaf toMutate = treeFlattened.get(rand.nextInt(treeFlattened.size()));
 
         if (rand.nextInt(10) <= 8) {
+            //tree.setTitle("(PM " + tree.getTitle() + ")");
             pointMutation(toMutate);
         } else {
+            //tree.setTitle("(STM " + tree.getTitle() + ")");
             subTreeMutation(toMutate);
         }
     }
@@ -105,9 +114,7 @@ public class Genetics {
         } else if (functionRandomNumber <= 3) {
             leaf.setElement(new SaveDivisionOperationNode());
         } else {
-            // Ternary element
             leaf.setElement(new ConditionalNode());
-            leaf.addChild(LeafFactory.randomFullLeaf());
         }
     }
 

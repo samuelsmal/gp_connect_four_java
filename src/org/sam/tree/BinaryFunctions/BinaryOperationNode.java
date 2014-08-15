@@ -23,6 +23,6 @@ abstract class BinaryOperationNode implements INode {
 
     @Override
     public String print(List<Leaf> children) {
-        return "(" + children.get(0).toString() + operationSign + children.get(1).toString() + ")";
+        return "(" + children.get(0).toString() + " " + operationSign + " " + children.get(1).toString() + ")";
     }
 }

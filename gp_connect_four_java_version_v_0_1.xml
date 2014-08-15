@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gp_connect_four_java_version" default="all">
+  
+  
+  <property file="gp_connect_four_java_version_v_0_1.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
+  <path id="jdk.classpath.1.7">
+    <fileset dir="${jdk.home.1.7}">
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/rhino.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/ext/pulse-java.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.7}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm4-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module java_version -->
+  
+  <dirname property="module.java_version.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.java_version" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.java_version" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.java_version" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.java_version" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="java_version.output.dir" value="${module.java_version.basedir}/out/production/java_version"/>
+  <property name="java_version.testoutput.dir" value="${module.java_version.basedir}/out/test/java_version"/>
+  
+  <path id="java_version.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="java_version.module.production.classpath">
+    <path refid="${module.jdk.classpath.java_version}"/>
+    <pathelement location="${idea.home}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/hamcrest-library-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/junit-4.11.jar"/>
+  </path>
+  
+  <path id="java_version.runtime.production.module.classpath">
+    <pathelement location="${java_version.output.dir}"/>
+    <pathelement location="${idea.home}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/hamcrest-library-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/junit-4.11.jar"/>
+  </path>
+  
+  <path id="java_version.module.classpath">
+    <path refid="${module.jdk.classpath.java_version}"/>
+    <pathelement location="${java_version.output.dir}"/>
+    <pathelement location="${idea.home}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/hamcrest-library-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/junit-4.11.jar"/>
+  </path>
+  
+  <path id="java_version.runtime.module.classpath">
+    <pathelement location="${java_version.testoutput.dir}"/>
+    <pathelement location="${java_version.output.dir}"/>
+    <pathelement location="${idea.home}/lib/hamcrest-core-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/hamcrest-library-1.3.jar"/>
+    <pathelement location="${idea.home}/lib/junit-4.11.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.java_version">
+    <patternset refid="ignored.files"/>
+    <exclude name="out/**"/>
+    <exclude name="out/test/**"/>
+    <exclude name="out/test/java_version/**"/>
+    <exclude name="out/test/java_version/test/**"/>
+    <exclude name="out/test/java_version/test/game/**"/>
+    <exclude name="out/test/java_version/test/tree/**"/>
+    <exclude name="out/production/**"/>
+    <exclude name="out/production/java_version/**"/>
+    <exclude name="out/production/java_version/org/**"/>
+    <exclude name="out/production/java_version/org/sam/**"/>
+    <exclude name="out/production/java_version/org/sam/game/**"/>
+    <exclude name="out/production/java_version/org/sam/game/EvolvedPlayers/**"/>
+    <exclude name="out/production/java_version/org/sam/tree/**"/>
+    <exclude name="out/production/java_version/org/sam/tree/Terminals/**"/>
+    <exclude name="out/production/java_version/org/sam/tree/BinaryFunctions/**"/>
+    <exclude name="out/production/java_version/org/sam/tree/TernaryFunctions/**"/>
+    <exclude name="out/production/java_version/org/sam/Random/**"/>
+    <exclude name="out/production/java_version/org/sam/genetics/**"/>
+    <exclude name="out/production/java_version/org/sam/Tournament/**"/>
+    <exclude name="out/production/java_version/src/**"/>
+    <exclude name="out/production/java_version/src/META-INF/**"/>
+    <exclude name="out/production/java_version/test/**"/>
+    <exclude name="out/production/java_version/test/tree/**"/>
+    <exclude name="out/production/java_version/.idea/**"/>
+    <exclude name="out/production/java_version/.idea/scopes/**"/>
+    <exclude name="out/production/java_version/.idea/artifacts/**"/>
+    <exclude name="out/production/java_version/.idea/copyright/**"/>
+    <exclude name="out/production/java_version/META-INF/**"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.java_version">
+    <patternset refid="excluded.from.module.java_version"/>
+  </patternset>
+  
+  <path id="java_version.module.sourcepath">
+    <dirset dir="${module.java_version.basedir}/../../Theorie und Simulation Neuronaler Netzwerke">
+      <include name="java_version/src"/>
+      <include name="java_version"/>
+    </dirset>
+  </path>
+  
+  <path id="java_version.module.test.sourcepath">
+    <dirset dir="${module.java_version.basedir}/../../Theorie und Simulation Neuronaler Netzwerke">
+      <include name="java_version/src/test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.java_version" depends="compile.module.java_version.production,compile.module.java_version.tests" description="Compile module java_version"/>
+  
+  <target name="compile.module.java_version.production" depends="register.custom.compilers" description="Compile module java_version; production classes">
+    <mkdir dir="${java_version.output.dir}"/>
+    <javac2 destdir="${java_version.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.java_version}/javac">
+      <compilerarg line="${compiler.args.java_version}"/>
+      <bootclasspath refid="java_version.module.bootclasspath"/>
+      <classpath refid="java_version.module.production.classpath"/>
+      <src refid="java_version.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.java_version"/>
+    </javac2>
+    
+    <copy todir="${java_version.output.dir}">
+      <fileset dir="${module.java_version.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.java_version.basedir}">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.java_version.tests" depends="register.custom.compilers,compile.module.java_version.production" description="compile module java_version; test classes" unless="skip.tests">
+    <mkdir dir="${java_version.testoutput.dir}"/>
+    <javac2 destdir="${java_version.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.java_version}/javac">
+      <compilerarg line="${compiler.args.java_version}"/>
+      <bootclasspath refid="java_version.module.bootclasspath"/>
+      <classpath refid="java_version.module.classpath"/>
+      <src refid="java_version.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.java_version"/>
+    </javac2>
+    
+    <copy todir="${java_version.testoutput.dir}">
+      <fileset dir="${module.java_version.basedir}/src/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.java_version" description="cleanup module">
+    <delete dir="${java_version.output.dir}"/>
+    <delete dir="${java_version.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.java_version" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.java_version" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.java_version:jar" value="${basedir}/out/artifacts/java_version_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.java_version.jar" value="${artifacts.temp.dir}/java_version.jar"/>
+  </target>
+  
+  <target name="artifact.java_version:jar" depends="init.artifacts, compile.module.java_version" description="Build &#39;java_version:jar&#39; artifact">
+    <property name="artifact.temp.output.java_version:jar" value="${artifacts.temp.dir}/java_version_jar"/>
+    <mkdir dir="${artifact.temp.output.java_version:jar}"/>
+    <jar destfile="${temp.jar.path.java_version.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset dir="${java_version.output.dir}"/>
+      <zipfileset src="${idea.home}/lib/junit-4.11.jar"/>
+      <zipfileset src="${idea.home}/lib/hamcrest-core-1.3.jar"/>
+      <zipfileset src="${idea.home}/lib/hamcrest-library-1.3.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.java_version.jar}" tofile="${artifact.temp.output.java_version:jar}/java_version.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.java_version:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.java_version:jar}"/>
+    <copy todir="${artifact.output.java_version:jar}">
+      <fileset dir="${artifact.temp.output.java_version:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

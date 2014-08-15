@@ -22,12 +22,12 @@ public class SaveDivisionOperationNode extends BinaryOperationNode {
     @Override
     public String print(List<Leaf> children) {
         String rhs = children.get(1).toString();
-        return "(" + rhs + " > 0 ? "
+        return "(" + rhs + " != 0 ? "
                 + children.get(0).toString() + " / " + rhs + " : 1)";
     }
 
     @Override
     protected long doOperation(long leftValue, long rightValue) {
-        return (rightValue > 0 ? leftValue / rightValue : 1);
+        return (rightValue != 0 ? leftValue / rightValue : 1);
     }
 }

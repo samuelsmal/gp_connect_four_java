@@ -16,11 +16,11 @@ public class ConditionalNodeTest {
     public void testEvaluate() throws Exception {
         Tree conditionalTree = new Tree();
 
-        Leaf conLeaf = LeafFactory.conditionalLeaf();
+        Leaf conLeaf =  new Leaf(new ConditionalNode());
 
-        conLeaf.addChild(LeafFactory.constantLeaf(1));
-        conLeaf.addChild(LeafFactory.constantLeaf(2));
-        conLeaf.addChild(LeafFactory.constantLeaf(3));
+        conLeaf.addChild(new Leaf(new ConstantNode(1)));
+        conLeaf.addChild(new Leaf(new ConstantNode(2)));
+        conLeaf.addChild(new Leaf(new ConstantNode(3)));
 
         conditionalTree.setRoot(conLeaf);
 

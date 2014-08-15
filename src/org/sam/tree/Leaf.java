@@ -23,7 +23,7 @@ public class Leaf {
 
     public Leaf(Leaf other) {
         element = other.getElement().getCopy();
-        children = new ArrayList<>();
+        children = new ArrayList<>(other.getChildren().size());
 
         for (Leaf l : other.getChildren()) {
             children.add(new Leaf(l));

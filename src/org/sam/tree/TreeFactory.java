@@ -11,4 +11,6 @@ public class TreeFactory {
     public static Tree fullTree(long depth) {
         return new Tree(LeafFactory.randomFullLeaf(depth));
     }
+
+    public static Tree halfTree(long maxDepth) { return new Tree(LeafFactory.randomHalfLeaf(maxDepth)); }
 }
