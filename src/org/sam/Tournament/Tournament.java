@@ -167,7 +167,7 @@ public class Tournament {
         for (int i = start; i < end && i < players.size(); i++) {
             PlayerEnlist player = players.get(i);
 
-            for (int j = 0; j < groupSize; j++) {
+            for (int j = 0; j < groupSize - 1; j++) {
                 game.startGame(player.player, randomPlayer);
                 player.newMatch();
                 if (game.colourOfWinner() == Game.FIRST_PLAYER_COLOUR) {
