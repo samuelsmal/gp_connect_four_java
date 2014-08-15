@@ -23,7 +23,7 @@ public class LeafFactory {
     }
 
     public static Leaf randomFullLeaf(long depth) {
-        if (called) {
+        if (!called) {
             called = true;
 
             printSettings();
@@ -96,7 +96,7 @@ public class LeafFactory {
     }
 
     public static Leaf randomHalfLeaf(long maxDepth) {
-        if (called) {
+        if (!called) {
             called = true;
 
             printSettings();

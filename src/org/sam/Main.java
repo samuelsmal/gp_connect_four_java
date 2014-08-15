@@ -2,22 +2,72 @@ package org.sam;
 
 import org.sam.Tournament.Tournament;
 import org.sam.game.*;
-import org.sam.game.EvolvedPlayers.SunAug10_14_10_66;
+import org.sam.game.EvolvedPlayers.*;
 import org.sam.genetics.Evolution;
 import org.sam.tree.LeafFactory;
+import org.sam.tree.TournamentEntry;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class Main {
 
     public static void main(String[] args) {
-        evol();
+        play();
     }
 
     private static void play() {
         Game game = new Game();
 
-        game.startGame(new SunAug10_14_10_66(), new HumanPlayer());
+        game.startGame(new RampedHHOnlyTernaryPlayer(), new HumanPlayer());
+
+        System.out.println(game);
+
+        if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
+            System.out.println("Player " + Game.FIRST_PLAYER_COLOUR + " won!");
+        } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
+            System.out.println("Player " + Game.SECOND_PLAYER_COLOUR + " won!");
+        } else {
+            System.out.println("It's a draw!");
+        }
+    }
+
+    private static void superTournament() {
+        List<TournamentEntry> bestEvolvedPlayers = new ArrayList<>();
+
+        bestEvolvedPlayers.add(new TournamentEntry(new FullTreePlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new MaxPlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new MutationPlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new NoHigherFunctionsPlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new NoHigherFunctionsHighPopGenPlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new RampedHHOnlyTernaryPlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new RampedHHOnlyTernaryHigherPopAndGenPlayer()));
+        bestEvolvedPlayers.add(new TournamentEntry(new RampedHigherPopAndGen()));
+
+        Game game = new Game();
+
+        for (int i = 0; i < bestEvolvedPlayers.size(); i++) {
+            for (int j = 0; j < bestEvolvedPlayers.size(); j++) {
+                if (i != j) {
+                    game.startGame(bestEvolvedPlayers.get(i).getPlayer(), bestEvolvedPlayers.get(j).getPlayer());
+
+                    if (Game.FIRST_PLAYER_COLOUR == game.colourOfWinner()) {
+                        bestEvolvedPlayers.get(i).newMatchWon();
+                    } else if (Game.SECOND_PLAYER_COLOUR == game.colourOfWinner()) {
+                        bestEvolvedPlayers.get(j).newMatchWon();
+                    }
+                }
+            }
+        }
+
+        Collections.sort(bestEvolvedPlayers);
+
+        System.out.println("And the overall winner with " + bestEvolvedPlayers.get(0).matchesWon()
+            + " wins is " + bestEvolvedPlayers.get(0));
+
     }
 
     private static void evol() {
@@ -71,15 +121,15 @@ public class Main {
          * Bear in mind that using unreasonable values could break the program. (Like setting the population to zero.)
          */
         Evolution evolution = new Evolution.Builder()
-                .numberOfGenerations(100)
-                .numberOfPlayers(240)
+                //.numberOfGenerations(500)
+                //.numberOfPlayers(240)
                 //.winAgainstGPPlayerWeight(4)
                 //.winAgainstRandomPlayerWeight(23)
                 //.drawWeight(8)
                 //.depthOfTrees(20)
                 .rampedHalfAndHalf(true)
                 //.maxApproach(true)
-                //.mutationOn(true)
+                .mutationOn(true)
                 .build();
 
 
@@ -121,4 +171,5 @@ public class Main {
                 + "\n\t Matches played: " + (2 * rounds));
         System.out.println("Evolved code:\n" + winner);
     }
+
 }
