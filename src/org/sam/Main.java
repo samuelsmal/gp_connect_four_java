@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
 public class Main {
 
     public static void main(String[] args) {
-        play();
+        evolve();
     }
 
     private static void play() {
@@ -70,7 +70,7 @@ public class Main {
 
     }
 
-    private static void evol() {
+    private static void evolve() {
         /*
          *
          *    ,--.
@@ -121,8 +121,8 @@ public class Main {
          * Bear in mind that using unreasonable values could break the program. (Like setting the population to zero.)
          */
         Evolution evolution = new Evolution.Builder()
-                //.numberOfGenerations(500)
-                //.numberOfPlayers(240)
+                .numberOfGenerations(1000)
+                .numberOfPlayers(400)
                 //.winAgainstGPPlayerWeight(4)
                 //.winAgainstRandomPlayerWeight(23)
                 //.drawWeight(8)
