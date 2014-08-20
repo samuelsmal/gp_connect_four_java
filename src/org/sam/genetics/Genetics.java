@@ -34,6 +34,15 @@ public class Genetics {
         List<Leaf> lhsFlattened = lhs.flatten();
         List<Leaf> rhsFlattened = rhs.flatten();
 
+        // Selection of the element-to-switch.
+        // The selection process could be improved. See issues.
+        /*
+        int element = rand.nextInt(Math.min(lhsFlattened.size(), rhsFlattened.size()));
+
+        Leaf lLeaf = lhsFlattened.get(element);
+        Leaf rLeaf = rhsFlattened.get(element);
+        */
+
         Leaf lLeaf = lhsFlattened.get(rand.nextInt(lhsFlattened.size()));
         Leaf rLeaf = rhsFlattened.get(rand.nextInt(rhsFlattened.size()));
 

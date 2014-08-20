@@ -18,14 +18,22 @@ public class Tournament {
     private int winAgainstGPPlayerWeight;
     private int drawWeight;
     private int groupSize;
+    private int positionWeight;
     private boolean maxApproach;
 
-    public Tournament(List<GPTreePlayer> gpTreePlayers, int numberOfPlayersToReturn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight, boolean maxApproach) {
+    public Tournament(List<GPTreePlayer> gpTreePlayers,
+                      int numberOfPlayersToReturn,
+                      int winAgainstRandomPlayerWeight,
+                      int winAgainstGPPlayerWeight,
+                      int drawWeight,
+                      boolean maxApproach,
+                      int positionWeight) {
         this.numberOfPlayersToReturn = numberOfPlayersToReturn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
         this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
         this.drawWeight = drawWeight;
         this.maxApproach = maxApproach;
+        this.positionWeight = positionWeight;
 
         groupSize = gpTreePlayers.size() / Runtime.getRuntime().availableProcessors();
 
@@ -53,6 +61,7 @@ public class Tournament {
         try {
             playerTournament();
             randomPlayerTournament();
+            positionTournament();
         } catch (InterruptedException  e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -60,7 +69,7 @@ public class Tournament {
         }
 
         List<GPTreePlayer> winners = new ArrayList<>(numberOfPlayersToReturn);
-        System.out.println("\nThe best evolved players: (wins EP / wins RP / draws EP / draws RP / matches / treetitle_geneticCount)");
+        System.out.println("\nThe best evolved players:\nwins EP / wins RP / draws EP / draws RP / matches / positions correct / treetitle_geneticCount");
         PlayerEnlist p;
 
         if (!maxApproach) {
@@ -70,12 +79,13 @@ public class Tournament {
                 p = players.get(i);
 
                 winners.add(p.player);
-                System.out.println("\t" + i + " : "
-                                + p.matchesWonAgainstPlayer + " / "
-                                + p.matchesWonAgainstRandom + " / "
-                                + p.drawAgainstPlayer + " / "
-                                + p.drawAgainstRandom + " / "
-                                + p.matches + " / "
+                System.out.println("\t" + i + "\t"
+                                + p.matchesWonAgainstPlayer + "\t"
+                                + p.matchesWonAgainstRandom + "\t"
+                                + p.drawAgainstPlayer + "\t"
+                                + p.drawAgainstRandom + "\t"
+                                + p.matches + "\t"
+                                + p.positionsCorrect + "\t"
                                 + p.player.getTree().getTitle() + "_" + p.player.getTree().getGeneticCount()
 
                 );
@@ -188,7 +198,6 @@ public class Tournament {
     }
 
     private void playerTournament() throws InterruptedException, ExecutionException {
-
         int threads = Runtime.getRuntime().availableProcessors();
         ExecutorService service = Executors.newFixedThreadPool(threads);
 
@@ -243,6 +252,49 @@ public class Tournament {
         }
     }
 
+    private void positionTournament() {
+        int threads = Runtime.getRuntime().availableProcessors();
+        ExecutorService service = Executors.newFixedThreadPool(threads);
+
+        for (int i = 0; i < threads; i++) {
+            final int start = i * groupSize;
+            final int end = (i + 1) * groupSize;
+
+            service.execute(new Runnable() {
+                @Override
+                public void run() {
+                    positionTournamentGroups(start, end);
+                }
+            });
+        }
+
+        service.shutdown();
+
+        try {
+            service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            System.out.println("positionTournamentGroups interrupted\n" + e.getMessage());
+        }
+    }
+
+    private void positionTournamentGroups(int start, int end) {
+        Game game = new Game();
+
+        PlayerEnlist currentPlayer;
+
+        for (int i = start; i < players.size() && i < end; i++) {
+            currentPlayer = players.get(i);
+
+            for (int j = 0; j < groupSize; j++) {
+                // Checking if player prefers the middle
+                if (currentPlayer.player.play(game, Game.FIRST_PLAYER_COLOUR, Game.SECOND_PLAYER_COLOUR) == 3) {
+                    // Doesn't need to be synchronized.
+                    currentPlayer.positionsCorrect++;
+                }
+            }
+        }
+    }
+
     private class PlayerEnlist implements Comparable<PlayerEnlist> {
         public GPTreePlayer player;
         public int matchesWonAgainstPlayer = 0;
@@ -250,6 +302,7 @@ public class Tournament {
         public int drawAgainstPlayer = 0;
         public int drawAgainstRandom = 0;
         public int matches = 0; // 2 * times hundred against the random player
+        public int positionsCorrect;
 
         private PlayerEnlist(GPTreePlayer player) {
 
@@ -258,6 +311,7 @@ public class Tournament {
             matchesWonAgainstPlayer = 0;
             drawAgainstPlayer = 0;
             drawAgainstRandom = 0;
+            positionsCorrect = 0;
         }
 
         public void newMatch() {
@@ -294,7 +348,7 @@ public class Tournament {
         public int overall() {
             if (matches == 0) matches = 1;
 
-            return (matchesWonAgainstRandom * winAgainstRandomPlayerWeight + matchesWonAgainstPlayer * winAgainstGPPlayerWeight + drawWeight * (drawAgainstRandom + drawAgainstPlayer)) / matches;
+            return (matchesWonAgainstRandom * winAgainstRandomPlayerWeight + matchesWonAgainstPlayer * winAgainstGPPlayerWeight + drawWeight * (drawAgainstRandom + drawAgainstPlayer)) + positionWeight * positionsCorrect; // matches;
         }
 
         /**

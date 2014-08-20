@@ -86,7 +86,7 @@ public class Main {
          * noHigherLevelFunctions :   false
          *
          * This MUST be set before using the evolution class.
-         *     =====
+         *      ====
          *
          * Comment out the lines below for altering the options.
          */
@@ -112,6 +112,7 @@ public class Main {
          *     winAgainstGPPlayerWeight : 2
          *                   drawWeight : 1
          *                 depthOfTrees : 4
+         *               positionWeight : 1        The number of times each position is tested, is equal to the group size.
          *            rampedHalfAndHalf : false
          *                  maxApproach : false
          *                   mutationOn : false
@@ -121,12 +122,13 @@ public class Main {
          * Bear in mind that using unreasonable values could break the program. (Like setting the population to zero.)
          */
         Evolution evolution = new Evolution.Builder()
-                .numberOfGenerations(1000)
-                .numberOfPlayers(400)
+                //.numberOfGenerations(1000)
+                //.numberOfPlayers(400)
                 //.winAgainstGPPlayerWeight(4)
                 //.winAgainstRandomPlayerWeight(23)
                 //.drawWeight(8)
                 //.depthOfTrees(20)
+                //.positionWeight(2)
                 .rampedHalfAndHalf(true)
                 //.maxApproach(true)
                 .mutationOn(true)

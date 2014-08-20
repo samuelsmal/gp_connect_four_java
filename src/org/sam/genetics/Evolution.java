@@ -21,6 +21,7 @@ public class Evolution {
     private int winAgainstGPPlayerWeight;
     private int drawWeight;
     private int numberOfPlayersToReturn;
+    private int positionWeight; // if -1, then the positions are given the same weight as there are group members.
     private boolean maxApproach;
 
     public static class Builder {
@@ -31,6 +32,7 @@ public class Evolution {
         private int winAgainstGPPlayerWeight = 2;
         private int drawWeight = 1;
         private int depthOfTrees = 4;
+        private int positionWeight = 1;
         private boolean rampedHalfAndHalf = false;
         private boolean maxApproach = false;
 
@@ -81,18 +83,42 @@ public class Evolution {
             return this;
         }
 
+        public Builder positionWeight(int positionWeight) {
+            this.positionWeight = positionWeight;
+            return this;
+        }
+
         public Evolution build() {
-            return new Evolution(numberOfPlayers, depthOfTrees, numberOfGenerations, mutationOn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, rampedHalfAndHalf, maxApproach);
+            return new Evolution(numberOfPlayers,
+                    depthOfTrees,
+                    numberOfGenerations,
+                    mutationOn,
+                    winAgainstRandomPlayerWeight,
+                    winAgainstGPPlayerWeight,
+                    drawWeight,
+                    rampedHalfAndHalf,
+                    maxApproach,
+                    positionWeight);
         }
     }
 
-    public Evolution(int numberOfPlayers, int depthOfTrees, int numberOfGenerations, boolean mutationOn, int winAgainstRandomPlayerWeight, int winAgainstGPPlayerWeight, int drawWeight, boolean rampedHalfAndHalf, boolean maxApproach) {
+    public Evolution(int numberOfPlayers,
+                     int depthOfTrees,
+                     int numberOfGenerations,
+                     boolean mutationOn,
+                     int winAgainstRandomPlayerWeight,
+                     int winAgainstGPPlayerWeight,
+                     int drawWeight,
+                     boolean rampedHalfAndHalf,
+                     boolean maxApproach,
+                     int positionWeight) {
         this.numberOfGenerations = numberOfGenerations;
         this.mutationOn = mutationOn;
         this.winAgainstRandomPlayerWeight = winAgainstRandomPlayerWeight;
         this.winAgainstGPPlayerWeight = winAgainstGPPlayerWeight;
         this.drawWeight = drawWeight;
         this.maxApproach = maxApproach;
+        this.positionWeight = positionWeight;
 
         if (mutationOn) {
             numberOfPlayersToReturn = (int)Math.sqrt((double)numberOfPlayers);
@@ -109,6 +135,7 @@ public class Evolution {
                 + "\n\twinAgainstRandomPlayerWeight: " + winAgainstRandomPlayerWeight
                 + "\n\twinAgainstGPPlayerWeight: " + winAgainstGPPlayerWeight
                 + "\n\tdrawWeight: " + drawWeight
+                + "\n\tpositionWeight:" + positionWeight
                 + "\n\trampedHalfAndHalf: " + rampedHalfAndHalf
                 + "\n\tmaxApproach: " + maxApproach
         );
@@ -137,12 +164,15 @@ public class Evolution {
     }
 
     public GPTreePlayer evolve() {
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+
+        System.out.println("The group size is " + (players.size() /  + availableProcessors) + ". The number of available processors is " + availableProcessors);
+
         for (int i = 0; i < numberOfGenerations; i++) {
             System.out.println("Generation " + (i + 1) + " / " + numberOfGenerations);
             System.out.println("\t" + players.get(0));
 
-
-            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, maxApproach).runTournament();
+            players = new Tournament(players, numberOfPlayersToReturn, winAgainstRandomPlayerWeight, winAgainstGPPlayerWeight, drawWeight, maxApproach, positionWeight).runTournament();
             toTheNextGeneration();
 
             System.out.println("\tWinner count of nodes: " + players.get(0).getTree().flatten().size());
