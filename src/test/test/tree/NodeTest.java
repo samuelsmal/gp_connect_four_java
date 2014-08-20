@@ -1,12 +1,5 @@
 package test.tree;
 
-import org.junit.Test;
-import org.sam.tree.*;
-import org.sam.tree.BinaryFunctions.AddOperationNode;
-import org.sam.tree.Terminals.ConstantNode;
-import org.sam.tree.Terminals.EnemyStoneAtNode;
-import org.sam.tree.TernaryFunctions.ConditionalNode;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 

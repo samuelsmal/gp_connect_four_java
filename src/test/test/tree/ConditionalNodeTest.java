@@ -1,12 +1,11 @@
 package test.tree;
 
 import org.junit.Test;
-import org.sam.game.Game;
-import org.sam.tree.Leaf;
-import org.sam.tree.LeafFactory;
-import org.sam.tree.TernaryFunctions.ConditionalNode;
-import org.sam.tree.Terminals.ConstantNode;
-import org.sam.tree.Tree;
+import org.samuelsmal.game.Game;
+import org.samuelsmal.tree.Leaf;
+import org.samuelsmal.tree.TernaryFunctions.ConditionalNode;
+import org.samuelsmal.tree.Terminals.ConstantNode;
+import org.samuelsmal.tree.Tree;
 
 import static org.junit.Assert.assertEquals;
 

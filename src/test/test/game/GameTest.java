@@ -2,8 +2,8 @@ package test.game;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sam.game.ColumnFullException;
-import org.sam.game.Game;
+import org.samuelsmal.game.ColumnFullException;
+import org.samuelsmal.game.Game;
 
 import static org.junit.Assert.*;
 

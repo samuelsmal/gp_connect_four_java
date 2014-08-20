@@ -1,11 +1,5 @@
 package test.tree;
 
-import org.junit.Test;
-import org.sam.game.Game;
-import org.sam.tree.Terminals.ConstantNode;
-import org.sam.tree.BinaryFunctions.SaveDivisionOperationNode;
-import org.sam.tree.Tree;
-
 import static org.junit.Assert.assertEquals;
 
 public class SaveDivisionOperationNodeTest {

@@ -1,9 +1,6 @@
 package test.tree;
 
 import org.junit.Test;
-import org.sam.tree.*;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

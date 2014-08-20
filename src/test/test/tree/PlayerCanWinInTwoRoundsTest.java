@@ -1,8 +1,8 @@
 package test.tree;
 
 import org.junit.Test;
-import org.sam.game.Game;
-import org.sam.tree.Terminals.PlayerCanWinInTwoRounds;
+import org.samuelsmal.game.Game;
+import org.samuelsmal.tree.Terminals.PlayerCanWinInTwoRounds;
 
 import static org.junit.Assert.*;
 
